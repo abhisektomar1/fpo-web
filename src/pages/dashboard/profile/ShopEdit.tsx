@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "../../../components/ui/select";
 import { Button } from "../../../components/ui/button";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import Layout from "../../../layout";

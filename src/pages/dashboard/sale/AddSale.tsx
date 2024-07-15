@@ -18,7 +18,7 @@ import {
 import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import { Autocomplete, TextField } from "@mui/material";
 
 function NewSale() {

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import { Loader2 } from "lucide-react";
 import {
   Tabs,

@@ -5,7 +5,7 @@ import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL_APP } from "../../../utils";

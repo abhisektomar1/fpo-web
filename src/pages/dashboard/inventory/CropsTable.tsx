@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Table from '../../../components/table'
-import { axiosInstance } from '../../../service/AxiosInstance';
 import { toast } from 'react-toastify';
 import { Box } from '@mui/material';
 import { BASE_URL_APP } from '../../../utils';
+import axiosInstance from '../../../service/AxiosInstance';
 
 function CropsTable() {
 

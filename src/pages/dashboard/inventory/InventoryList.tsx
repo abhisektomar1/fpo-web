@@ -4,12 +4,12 @@ import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 import { Card } from "../../../components/ui/card";
 import { useNavigate } from "react-router-dom";
 import Table from "../../../components/table";
-import { axiosInstance } from "../../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { Button } from "../../../components/ui/button";
 import {Loader2 } from "lucide-react";
 import { BASE_URL_APP } from "../../../utils";
+import axiosInstance from "../../../service/AxiosInstance";
 
 function InventoryList() {
   const navigate = useNavigate();
@@ -32,14 +32,14 @@ function InventoryList() {
       .post(`/ShowInventory`, {
         filter_type: filter,
       })
-      .then((res) => {
+      .then((res:any) => {
         if (res.status === 200) {
           setData(res.data);
         } else {
           toast.error("Something went wrong!");
         }
       })
-      .catch((error) => {
+      .catch((error:any) => {
         console.log(error);
         toast.error(error?.response?.data?.error || "Something went wrong!");
 

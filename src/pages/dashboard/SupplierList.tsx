@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { axiosInstance } from "../../service/AxiosInstance";
 import Layout from "../../layout";
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Table from "../../components/table";
+import axiosInstance from "../../service/AxiosInstance";
 
 
 function SupplierList() {

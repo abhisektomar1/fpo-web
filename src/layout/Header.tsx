@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { BASE_URL_APP } from "../utils";
-import { axiosInstance } from "../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../store/hooks";
 import { clearUser, setUser } from "../store/loginSlice";
@@ -9,6 +8,7 @@ import { setNav } from "../store/NavSlice";
 import { useNavigate } from "react-router-dom";
 import { setLan } from "../store/lanSlice";
 import { CircleUserRound, UserRound } from "lucide-react";
+import axiosInstance from "../service/AxiosInstance";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);

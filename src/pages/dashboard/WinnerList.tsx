@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 import Layout from "../../layout";
 import { Card } from "../../components/ui/card";
 import Table from "../../components/table";
-import { axiosInstance } from "../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { BASE_URL_APP } from "../../utils";
+import axiosInstance from "../../service/AxiosInstance";
 
 function WinnerList() {
   

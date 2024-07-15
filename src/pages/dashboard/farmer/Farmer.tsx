@@ -16,8 +16,8 @@ import { toast } from "react-toastify";
 import AddFarmer from "./AddFarmer";
 import { Card } from "../../../components/ui/card";
 import Table from "../../../components/table";
-import { axiosInstance } from "../../../service/AxiosInstance";
 import { useAppSelector } from "../../../store/hooks";
+import axiosInstance from "../../../service/AxiosInstance";
 
 function Farmer() {
   const navigate = useNavigate();

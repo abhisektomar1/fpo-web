@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/text-area";
 import { useForm } from "react-hook-form";
-import { axiosInstance } from "../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {

@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 import { Card } from "../../../components/ui/card";
 import { useNavigate } from "react-router-dom";
 import Table from "../../../components/table";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import { toast } from "react-toastify";
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { Button } from "../../../components/ui/button";

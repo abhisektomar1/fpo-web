@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card } from "../../../components/ui/card";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 import {
   Dialog,
   DialogContent,

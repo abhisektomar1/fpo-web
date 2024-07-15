@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Input } from "../../../components/ui/input";
 import { Loader2 } from "lucide-react";
-import { axiosInstance } from "../../../service/AxiosInstance";
+import axiosInstance from "../../../service/AxiosInstance";
 
 function AddFarmer() {
   const [isLoading, setIsLoading] = useState(false);
