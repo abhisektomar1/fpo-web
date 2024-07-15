@@ -1,1 +1,1 @@
-export const BASE_URL_APP = 'http://64.227.166.238:8090'
+export const BASE_URL_APP = 'https://www.agrisarathi.com'
