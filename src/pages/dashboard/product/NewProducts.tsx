@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../layout";
-import { Card } from "../../../components/ui/card";
+import { Card, CardTitle } from "../../../components/ui/card";
 import { useAppSelector } from "../../../store/hooks";
 import { FieldError, useForm } from "react-hook-form";
 import { BASE_URL_APP } from "../../../utils";
@@ -78,7 +78,7 @@ function NewProducts() {
   } = useForm<any>();
 
   const onSubmit = async (data: any) => {
-    const { composition,manufacturerName, ...dataMy } = data;
+    const { composition, manufacturerName, ...dataMy } = data;
     let productType;
     if (id === "Finish Goods") {
       productType = 3;
@@ -163,255 +163,309 @@ function NewProducts() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-12">
             <div className="col-span-12 p-4 md:col-span-8">
-              <h1 className="p-3 text-xl font-bold">Create Products</h1>
               <div className="flex flex-col">
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Product Name <span className="text-destructive">*</span>
+                <Card className="my-2 rounded p-4 shadow-md">
+                  <CardTitle className="border-b-2 pb-2">
+                    Enter Product Details
+                  </CardTitle>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Product Name <span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("productName", {
+                          required: "Product name is required",
+                        })}
+                        placeholder="Product name"
+                      />
+                      {renderErrorMessage(errors.productName)}
+                    </div>
                   </div>
-                  <div className="w-[350px]">
+                  <div className="flex flex-row items-start justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Description
+                    </div>
+                    <Textarea
+                      {...register("productDescription")}
+                      placeholder="Description"
+                      className="w-[350px]"
+                    />
+                  </div>
+                  {id === "Crops" && (
+                    <>
+                      <div className="flex flex-row items-center justify-between gap-4 p-2">
+                        <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                          Crop Type
+                        </div>
+                        <Select
+                          onValueChange={(e: any) => {
+                            setCropsId(e);
+                          }}
+                          value={cropsId}
+                        >
+                          <SelectTrigger className="w-[350px]">
+                            <SelectValue placeholder="Select Crop Type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {crops?.map((crop: any) => (
+                              <SelectItem
+                                key={crop.id}
+                                value={crop.id.toString()}
+                              >
+                                {crop.crop_name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex flex-row items-center justify-between gap-4 p-2">
+                        <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                          Variety Type
+                        </div>
+                        <Select
+                          onValueChange={(value) => {
+                            setVarietyId(value);
+                          }}
+                        >
+                          <SelectTrigger className="w-[350px]">
+                            <SelectValue placeholder="Select Crop Type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {variety?.map((crop: any) => (
+                              <SelectItem
+                                key={crop.id}
+                                value={crop.id.toString()}
+                              >
+                                {crop.variety}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </>
+                  )}
+                  {id !== "Crops" && (
+                    <>
+                      <div className="flex flex-row items-center justify-between gap-4 p-2">
+                        <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                          Composition
+                        </div>
+                        <Input
+                          {...register("composition")}
+                          placeholder="composition"
+                          className="w-[350px]"
+                        />
+                      </div>
+                      <div className="flex flex-row items-center justify-between gap-4 p-2">
+                        <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                          Manufacturer Name
+                        </div>
+                        <Input
+                          {...register("manufacturerName")}
+                          placeholder="Manufacturer Name"
+                          className="w-[350px]"
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Quantity<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("quantity", {
+                          required: "Product name is required",
+                        })}
+                        placeholder="Quantity"
+                      />
+                      {renderErrorMessage(errors.quantity)}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Measurement Unit
+                      <span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("measurement_unit", {
+                          required: "measurement_unit is required",
+                        })}
+                        placeholder="Measurement Unit"
+                      />
+                      {renderErrorMessage(errors.measurement_unit)}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Measurement Type
+                      <span className="text-destructive">*</span>
+                    </div>
+                    <Select
+                      onValueChange={(e: any) => {
+                        setmType(e);
+                      }}
+                    >
+                      <SelectTrigger className="w-[350px]">
+                        <SelectValue placeholder="Select Measurement Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="KG">KG</SelectItem>
+                        <SelectItem value="GM">GM</SelectItem>
+                        <SelectItem value="L">L</SelectItem>
+                        <SelectItem value="ML">ML</SelectItem>
+                        <SelectItem value="DOZEN">DOZEN</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Selling Status<span className="text-destructive">*</span>
+                    </div>
+                    <Select
+                      onValueChange={(e: any) => {
+                        SetStatus(e);
+                      }}
+                    >
+                      <SelectTrigger className="w-[350px]">
+                        <SelectValue placeholder="Select Selling Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="Online">Online</SelectItem>
+                        <SelectItem value="Offline">Offline</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Category<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
                     <Input
-                      {...register("productName", {
-                        required: "Product name is required",
+                      {...register("Category",{
+                        required: "Category is required",
                       })}
-                      placeholder="Product name"
+                      placeholder="Category"
                     />
-                    {renderErrorMessage(errors.productName)}
-                  </div>
-                </div>
-                <div className="flex flex-row items-start justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Description
-                  </div>
-                  <Textarea
-                    {...register("productDescription")}
-                    placeholder="Description"
-                    className="w-[350px]"
-                  />
-                </div>
-                {id === "Crops" && (
-                  <>
-                    <div className="flex flex-row items-center justify-between gap-4 p-2">
-                      <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                        Crop Type
-                      </div>
-                      <Select
-                        onValueChange={(e: any) => {
-                          setCropsId(e);
-                        }}
-                        value={cropsId}
-                      >
-                        <SelectTrigger className="w-[350px]">
-                          <SelectValue placeholder="Select Crop Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {crops?.map((crop: any) => (
-                            <SelectItem
-                              key={crop.id}
-                              value={crop.id.toString()}
-                            >
-                              {crop.crop_name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                     {renderErrorMessage(errors.Category)}
                     </div>
-                    <div className="flex flex-row items-center justify-between gap-4 p-2">
-                      <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                        Variety Type
-                      </div>
-                      <Select
-                        onValueChange={(value) => {
-                          setVarietyId(value);
-                        }}
-                      >
-                        <SelectTrigger className="w-[350px]">
-                          <SelectValue placeholder="Select Crop Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {variety?.map((crop: any) => (
-                            <SelectItem
-                              key={crop.id}
-                              value={crop.id.toString()}
-                            >
-                              {crop.variety}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </>
-                )}
-                 {id !== "Crops" && (
-                  <>
+                   
+                  </div>
+                </Card>
+                <Card className="my-2 rounded p-4 shadow-md">
+                  <CardTitle className="border-b-2 pb-2">
+                    Price Details
+                  </CardTitle>
                   <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                      Composition
+                      Unit Price <span className="text-destructive">*</span>
                     </div>
-                    <Input
-                      {...register("composition")}
-                      placeholder="composition"
-                      className="w-[350px]"
-                    />
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("unit_price", {
+                          required: "Unit price is required",
+                          pattern: {
+                            value: /^\d+(\.\d{1,2})?$/,
+                            message: "Invalid price format",
+                          },
+                        })}
+                        placeholder="Selling Price"
+                      />
+                      {renderErrorMessage(errors.unit_price)}
+                    </div>
                   </div>
+
                   <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                      Manufacturer Name
+                      Purchase price<span className="text-destructive">*</span>
                     </div>
+                    <div className="w-[350px]">
                     <Input
-                      {...register("manufacturerName")}
-                      placeholder="Manufacturer Name"
-                      className="w-[350px]"
-                    />
-                  </div>
-                  </>
-                )}
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Unit Price <span className="text-destructive">*</span>
-                  </div>
-                  <div className="w-[350px]">
-                    <Input
-                      {...register("unit_price", {
-                        required: "Unit price is required",
+                      {...register("purchase_price",{
+                        required: "Purchase price is required",
                         pattern: {
                           value: /^\d+(\.\d{1,2})?$/,
                           message: "Invalid price format",
                         },
                       })}
-                      placeholder="Selling Price"
+                      placeholder="Purchase Price"
                     />
-                    {renderErrorMessage(errors.unit_price)}
+                    {renderErrorMessage(errors.purchase_price)}
+                    </div>
+                   
                   </div>
-                </div>
-
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Purchase price
-                  </div>
-                  <Input
-                    {...register("purchase_price")}
-                    placeholder="Purchase Price"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    discount
-                  </div>
-                  <Input
-                    {...register("discount")}
-                    placeholder="Price"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Final Price
-                  </div>
-                  <Input
-                    {...register("final_price")}
-                    placeholder=" Final Price"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Measurement Unit
-                  </div>
-                  <Input
-                    {...register("measurement_unit")}
-                    placeholder="Measurement Unit"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Quantity
-                  </div>
-                  <Input
-                    {...register("quantity")}
-                    placeholder="Quantity"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Measurement Type
-                  </div>
-                  <Select
-                    onValueChange={(e: any) => {
-                      setmType(e);
-                    }}
-                  >
-                    <SelectTrigger className="w-[350px]">
-                      <SelectValue placeholder="Select Measurement Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="KG">KG</SelectItem>
-                      <SelectItem value="GM">GM</SelectItem>
-                      <SelectItem value="L">L</SelectItem>
-                      <SelectItem value="ML">ML</SelectItem>
-                      <SelectItem value="DOZEN">DOZEN</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Selling Status
-                  </div>
-                  <Select
-                    onValueChange={(e: any) => {
-                      SetStatus(e);
-                    }}
-                  >
-                    <SelectTrigger className="w-[350px]">
-                      <SelectValue placeholder="Select Selling Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="All">All</SelectItem>
-                      <SelectItem value="Online">Online</SelectItem>
-                      <SelectItem value="Offline">Offline</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Category
-                  </div>
-                  <Input
-                    {...register("Category")}
-                    placeholder="Category"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Party Name
-                  </div>
-                  <Input
-                    {...register("party_name")}
-                    placeholder="Party Name"
-                    className="w-[350px]"
-                  />
-                </div>
-                <div className="flex flex-row items-center justify-between gap-4 p-2">
-                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Mobile Number
-                  </div>
-                  <div className="w-[350px]">
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      discount
+                    </div>
+                    
                     <Input
-                      {...register("mobileno", {
+                      {...register("discount")}
+                      placeholder="Price"
+                      className="w-[350px]"
+                    />
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Final Price<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                    <Input
+                      {...register("final_price",{
+                        required: "Final price is required",
                         pattern: {
-                          value: /^\d{10}$/,
-                          message: "Invalid mobile number",
+                          value: /^\d+(\.\d{1,2})?$/,
+                          message: "Invalid price format",
                         },
                       })}
-                      placeholder="Mobile Number"
+                      placeholder=" Final Price"
                     />
-                    {renderErrorMessage(errors.mobileno)}
+                    {renderErrorMessage(errors.final_price)}
+                    </div>
                   </div>
-                </div>
+                </Card>
+                <Card className="my-2 rounded p-4 shadow-md">
+                  <CardTitle className="border-b-2 pb-2">
+                    Buyer Details
+                  </CardTitle>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Party Name<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                    <Input
+                      {...register("party_name",{
+                        required: "Party Name is required",
+                      })}
+                      placeholder="Party Name"
+                    />
+                    {renderErrorMessage(errors.party_name)}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Mobile Number<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("mobileno", {
+                          required: "Mobile No is required",
+                          pattern: {
+                            value: /^\d{10}$/,
+                            message: "Invalid mobile number",
+                          },
+                        })}
+                        placeholder="Mobile Number"
+                      />
+                      {renderErrorMessage(errors.mobileno)}
+                    </div>
+                  </div>
+                </Card>
+
                 <div className="flex flex-row">
                   <div className="w-[580px]" />
                   <Button type="submit" className="rounded">

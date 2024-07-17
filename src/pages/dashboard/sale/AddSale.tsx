@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../../layout";
 import { Card } from "../../../components/ui/card";
 import { useAppSelector } from "../../../store/hooks";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldError,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { BASE_URL_APP } from "../../../utils";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -17,14 +22,15 @@ import {
 } from "../../../components/ui/select";
 import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../service/AxiosInstance";
 import { Autocomplete, TextField } from "@mui/material";
 
 function NewSale() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<any>([]);
-console.log(data);
+  const navigate = useNavigate();
+
 
   const {
     register,
@@ -37,8 +43,6 @@ console.log(data);
     axiosInstance
       .post(`/GetFPOAllProducts`)
       .then((res) => {
-        console.log(res);
-        
         if (res.status === 200) {
           setData(res.data.products);
         } else {
@@ -47,7 +51,7 @@ console.log(data);
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.message);
+        toast.error(error?.response?.data?.message || "Something went wrong!");
       });
   }, []);
 
@@ -56,32 +60,41 @@ console.log(data);
     name: "products",
   });
   function formatDate(date: Date): string {
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   }
-  
+
   // Usage:
-  const today = formatDate(new Date()); 
+  const today = formatDate(new Date());
 
   const onSubmit = async (data: any) => {
+
+    if(data.products.length === 0){
+      toast.error("Please select atleast one product");
+      return
+    }
+    
     setIsLoading(true);
     const saleData = {
       ...data,
       sale_date: today,
     };
-    console.log(saleData);
-    
-    try {
-      await axiosInstance.post(
-        `${BASE_URL_APP}/AddSalesbyFPO`,
-          saleData
-      );
-      toast("Sale Done Successfully");
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+
+      try {
+        await axiosInstance.post(`${BASE_URL_APP}/AddSalesbyFPO`, saleData);
+        toast("Sale Done Successfully");
+        navigate("/dashboard/sale")
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error?.response?.data?.error || "Something went wrong!");
+      } finally {
+        setIsLoading(false);
+      }
+  };
+
+  const renderErrorMessage = (error: FieldError | any) => {
+    return error ? (
+      <p className="text-sm text-destructive">{error.message}</p>
+    ) : null;
   };
   return (
     <Layout>
@@ -95,25 +108,52 @@ console.log(data);
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                     Buyer Name <span className="text-destructive">*</span>
                   </div>
-                  <Input
-                    className="w-[350px]"
-                    {...register("buyer_name", {
-                      required: "Buyer name is required",
-                    })}
-                    placeholder="Buyer Name"
-                  />
+                  <div>
+                    <Input
+                      className="w-[350px]"
+                      {...register("buyer_name", {
+                        required: "Buyer name is required",
+                      })}
+                      placeholder="Buyer Name"
+                    />
+                    {renderErrorMessage(errors.buyer_name)}
+                  </div>
                 </div>
                 <div className="flex flex-row items-start justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Mobile Number
+                    Mobile Number<span className="text-destructive">*</span>
                   </div>
-                  <Input
+                  <div>
+                    <Input
                     className="w-[350px]"
-                    {...register("mobile_no", {
-                      required: "Mobile number is required",
-                    })}
-                    placeholder="Mobile Number"
-                  />
+                      {...register("mobile_no", {
+                        required: true,
+                        minLength: 10,
+                        maxLength: 10,
+                      })}
+                      placeholder="Mobile Number"
+                      onKeyDown={(e) => {
+                        const isNumeric = /^[0-9]$/.test(e.key);
+                        const isBackspaceOrDelete =
+                          e.key === "Backspace" || e.key === "Delete";
+                        if (!isNumeric && !isBackspaceOrDelete) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    {errors.mobile_no &&
+                      errors.mobile_no.type === "required" && (
+                        <p style={{ color: "#ff0000", fontSize: 12 }}>
+                          Mobile number is required
+                        </p>
+                      )}
+                    {errors.mobile_no &&
+                      errors.mobile_no.type === "minLength" && (
+                        <p style={{ color: "#ff0000", fontSize: 12 }}>
+                          Mobile number should be at least 10 digits long
+                        </p>
+                      )}
+                  </div>
                 </div>
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
@@ -122,12 +162,11 @@ console.log(data);
                   <Textarea
                     className="w-[350px]"
                     {...register("address", {
-                      required: "Address is required",
                     })}
                     placeholder="Address"
                   />
                 </div>{" "}
-                <h3 className="my-2 font-medium">Products</h3>
+                <h3 className="my-2 font-medium">Products</h3><span className="text-destructive">*</span>
                 {fields.map((field, index) => (
                   <Card className="mb-2 rounded p-4">
                     <div key={field.id} className="flex flex-row flex-col">
@@ -153,11 +192,14 @@ console.log(data);
                                 option.inventory_id === (value as any)
                               }
                               onChange={(_, newValue) =>
-                                onChange(newValue ? newValue.inventory_id : null)
+                                onChange(
+                                  newValue ? newValue.inventory_id : null,
+                                )
                               }
                               value={
                                 data.find(
-                                  (product:any) => product.inventory_id === value,
+                                  (product: any) =>
+                                    product.inventory_id === value,
                                 ) || null
                               }
                               renderInput={(params) => (
@@ -182,7 +224,7 @@ console.log(data);
                           {...register(`products.${index}.Quantity` as const, {
                             required: "Quantity is required",
                             min: 1,
-                            valueAsNumber: true, 
+                            valueAsNumber: true,
                           })}
                           placeholder="Quantity"
                         />
@@ -200,7 +242,7 @@ console.log(data);
                             {
                               required: "Price is required",
                               min: 0,
-                              valueAsNumber: true, 
+                              valueAsNumber: true,
                             },
                           )}
                           placeholder="Price"
@@ -224,7 +266,7 @@ console.log(data);
                       append({
                         Quantity: 0,
                         final_price: 0,
-                        inventory_id:0
+                        inventory_id: 0,
                       })
                     }
                   >

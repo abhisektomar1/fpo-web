@@ -120,7 +120,7 @@ function Login() {
                     letter, one uppercase letter, and one special character
                   </p>
                 )}
-                <label
+                {/* <label
                   htmlFor="email"
                   className="block text-sm font-medium text-primary self-end mt-2 hover:cursor-pointer"
                   onClick={() => {
@@ -128,7 +128,7 @@ function Login() {
                   }}
                 >
                   Forgot Password ?
-                </label>
+                </label> */}
               </div>
               <div className="flex flex-col items-center justify-center">
                 <Button type="submit" className="mt-4 w-[300px] rounded">
@@ -141,11 +141,11 @@ function Login() {
                 </Button>
               </div>
             </form>
-            <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
+            {/* <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
               navigate("/signup")
             }}>
               SIGN UP
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

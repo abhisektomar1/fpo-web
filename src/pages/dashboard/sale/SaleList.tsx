@@ -41,7 +41,7 @@ function SaleList() {
     enableGrouping: true,
     enableColumnPinning: false,
     enableFacetedValues: false,
-    enableRowActionsTrue: true,
+    enableRowActionsTrue: false,
     enableRowSelection: false,
     showColumnFilters: true,
     showGlobalFilter: true, // Assuming this should also be passed as a prop

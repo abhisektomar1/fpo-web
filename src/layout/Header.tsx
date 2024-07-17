@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { setLan } from "../store/lanSlice";
 import { CircleUserRound, UserRound } from "lucide-react";
 import axiosInstance from "../service/AxiosInstance";
+import { useHeaderData } from "../hooks/useHeaderData";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -18,28 +19,9 @@ function Header() {
   const menuRef1 = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [dataa, setDataa] = useState<any>();
+  const headerData = useHeaderData();
+  
 
-  const [data, setData] = useState<any>();
-
-  useEffect(() => {
-    axiosInstance
-      .post(`/GetFPODetails`)
-      .then((res) => {
-        setDataa(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {});
-  }, []);
-
-  useEffect(() => {
-    axiosInstance
-      .post(`/show_coinsfpo`)
-      .then((res) => setData(res.data))
-      .catch((error) => console.log(error));
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -220,9 +202,9 @@ function Header() {
           <img src="/images/bell.svg" alt="Notifications" className="h-5 w-5" />
         </Button>
         <div className="relative" ref={menuRef}>
-          {dataa?.basic_info[0]?.profile ? (
+          {headerData?.basic_info[0]?.profile ? (
             <img
-              src={`${BASE_URL_APP}/media/${dataa?.basic_info[0]?.profile}`}
+              src={`${BASE_URL_APP}/media/${headerData?.basic_info[0]?.profile}`}
               onClick={toggleMenu}
               className="h-12 w-12 border-primary border-2 rounded-full hover:cursor-pointer"
             />
@@ -259,4 +241,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default React.memo(Header);

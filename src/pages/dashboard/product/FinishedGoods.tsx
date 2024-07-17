@@ -25,7 +25,7 @@ function FinishedGoods() {
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.message)
+        toast.error(error?.response?.data?.message || "Something went wrong!");
       });
   }, []);
   const editClick = (e: React.MouseEvent, row: any) =>{

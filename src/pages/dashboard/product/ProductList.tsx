@@ -38,6 +38,7 @@ function ProductList() {
         toast("Products added successfully");
       } catch (error) {
         console.log(error);
+        
       }
     };
   return (
