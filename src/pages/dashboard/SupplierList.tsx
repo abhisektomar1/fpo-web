@@ -60,6 +60,18 @@ function SupplierList() {
             header: "Supplier Mobile No.",
           },
           {
+            accessorKey: "product_names",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Product Name",
+          },
+          {
+            accessorKey: "producttype",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Product Type",
+          },
+          {
             accessorKey: "quantity",
             enableClickToCopy: true,
             filterVariant: "autocomplete",

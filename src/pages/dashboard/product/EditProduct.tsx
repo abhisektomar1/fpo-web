@@ -127,7 +127,7 @@ console.log(dataa);
       navigate("/dashboard/productList");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response.data.message || "something went wrong!!");
     } finally {
       setIsLoading(false);
     }
@@ -156,7 +156,7 @@ console.log(dataa);
     setValue("Category", data?.Category);
     setValue("composition", data?.composition);
     setValue("manufacturerName", data?.manufacturerName);
-
+    
     setmType(data?.measurement_type);
     SetStatus(data?.selling_status);
     setCropsId(data?.crop_id);

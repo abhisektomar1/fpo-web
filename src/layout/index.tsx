@@ -7,6 +7,7 @@ interface LayoutProps {
 }
 
 function Layout({ children }: LayoutProps) {
+  
   return (
     <div className="flex h-screen flex-col">
       <Header />

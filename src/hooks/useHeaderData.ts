@@ -4,7 +4,7 @@ import axios from 'axios';
 import axiosInstance from '../service/AxiosInstance';
 
 export const useHeaderData = () => {
-  const [headerData, setHeaderData] = useState<any>(null);
+  const [headerData, setHeaderData] = useState<any>();
 
   useEffect(() => {
     const fetchHeaderData = async () => {
