@@ -80,7 +80,7 @@ const ShopEdit: React.FC = () => {
 
     try {
       const res = await axiosInstance.post(`/FPO_profile_update`, data);
-      toast("Product Created Successfully");
+      toast("Profile Updated Successfully!!");
       navigate("/dashboard/userProfile")
 
     } catch (error: any) {

@@ -66,7 +66,7 @@ const FPODetails = () => {
     const file = imageRef.current.files[0];
     const formData = new FormData();
     formData.append("profile_image", file);
-    formData.append("userid", user.obj_id);
+    formData.append("userid", user?.obj_id);
 
     try {
       await axios.post(`${BASE_URL_APP}/FPOProfilePictureUpdate`, 
@@ -89,7 +89,7 @@ const FPODetails = () => {
         business_establishdate: "2023-07-06",
         ...dataa,
       });
-      toast("Product Created Successfully");
+      toast("Profile Updated  Successfully");
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);

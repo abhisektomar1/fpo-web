@@ -5,9 +5,17 @@ import { Card } from "../../../components/ui/card";
 import { useNavigate } from "react-router-dom";
 import Table from "../../../components/table";
 import { toast } from "react-toastify";
-import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { Button } from "../../../components/ui/button";
-import {Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { BASE_URL_APP } from "../../../utils";
 import axiosInstance from "../../../service/AxiosInstance";
 
@@ -17,7 +25,7 @@ function InventoryList() {
   const [filter, setFilter] = useState<string>("Agricultural Inputs");
   const [selectedRow, setSelectedRow] = useState<any>();
   const [open, setOpen] = React.useState<boolean>(false);
-  const [stock, setStock] = useState()
+  const [stock, setStock] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClickOpen = () => {
@@ -32,17 +40,16 @@ function InventoryList() {
       .post(`/ShowInventory`, {
         filter_type: filter,
       })
-      .then((res:any) => {
+      .then((res: any) => {
         if (res.status === 200) {
           setData(res.data);
         } else {
           toast.error("Something went wrong!");
         }
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         console.log(error);
         toast.error(error?.response?.data?.error || "Something went wrong!");
-
       });
   }, [filter]);
 
@@ -76,10 +83,28 @@ function InventoryList() {
             header: "Category",
           },
           {
-            accessorKey: "stock_status",
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
+            accessorFn: (row: any) => `${row.stock_status}`, //accessorFn used to join multiple data into a single cell
+            id: "name", //id is still required when using accessorFn instead of accessorKey
             header: "Stock Status",
+            size: 250,
+            Cell: ({ renderedCellValue, row }: any) => (
+           
+                row?.original.stock_status === "Low Stock" ? (
+                 <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    color:"red",
+                  }}
+                >
+                    <span>{row.original.stock_status}</span>
+                </Box>
+                ) : (
+                  <span>{row.original.stock_status}</span>
+                )
+           
+            ),
           },
           {
             accessorKey: "stock_quantity",
@@ -95,7 +120,7 @@ function InventoryList() {
 
   const editClick = (e: React.MouseEvent, row: any) => {
     setSelectedRow(row);
-    handleClickOpen()
+    handleClickOpen();
   };
 
   const onSubmit = async () => {
@@ -106,15 +131,14 @@ function InventoryList() {
       const res = await axiosInstance.post(
         `${BASE_URL_APP}/UpdateInventorybyFPO`,
         {
-          inventory_id:selectedRow?.inventory_id,
-          new_stock:stock
+          inventory_id: selectedRow?.inventory_id,
+          new_stock: stock,
         },
       );
       toast("quantity changed successfully");
     } catch (error: any) {
       console.log(error);
       toast.error(error?.response?.data?.error || "Something went wrong!");
-
     } finally {
       setIsLoading(false);
     }
@@ -152,46 +176,53 @@ function InventoryList() {
           </div>
         </Tabs>
         <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event:any) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
-        }}
-      >
-        <DialogTitle>Edit Quantity</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To edit quantity, please enter the new quantity. And make sure they don not exceed the product quantity.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            label="Stock quantity"
-            fullWidth
-            variant="standard"
-            value={stock}
-            onChange={(e:any) => {
-              setStock(e.target.value);
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="outline" className="rounded" onClick={handleClose}>Cancel</Button>
-          <Button onClick={onSubmit} className="rounded" type="submit"> {
-             isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            } Save</Button>
-        </DialogActions>
-      </Dialog>
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            component: "form",
+            onSubmit: (event: any) => {
+              event.preventDefault();
+              const formData = new FormData(event.currentTarget);
+              const formJson = Object.fromEntries(formData.entries());
+              const email = formJson.email;
+              console.log(email);
+              handleClose();
+            },
+          }}
+        >
+          <DialogTitle>Edit Quantity</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To edit quantity, please enter the new quantity. And make sure
+              they don not exceed the product quantity.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              label="Stock quantity"
+              fullWidth
+              variant="standard"
+              value={stock}
+              onChange={(e: any) => {
+                setStock(e.target.value);
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outline" className="rounded" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button onClick={onSubmit} className="rounded" type="submit">
+              {" "}
+              {isLoading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}{" "}
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Card>
     </Layout>
   );
