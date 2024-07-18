@@ -360,44 +360,7 @@ function NewProducts() {
                   <CardTitle className="border-b-2 pb-2">
                     Price Details
                   </CardTitle>
-                  <div className="flex flex-row items-center justify-between gap-4 p-2">
-                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                      Unit Price <span className="text-destructive">*</span>
-                    </div>
-                    <div className="w-[350px]">
-                      <Input
-                        {...register("unit_price", {
-                          required: "Unit price is required",
-                          pattern: {
-                            value: /^\d+(\.\d{1,2})?$/,
-                            message: "Invalid price format",
-                          },
-                        })}
-                        placeholder="Selling Price"
-                      />
-                      {renderErrorMessage(errors.unit_price)}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-row items-center justify-between gap-4 p-2">
-                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                      Purchase price<span className="text-destructive">*</span>
-                    </div>
-                    <div className="w-[350px]">
-                    <Input
-                      {...register("purchase_price",{
-                        required: "Purchase price is required",
-                        pattern: {
-                          value: /^\d+(\.\d{1,2})?$/,
-                          message: "Invalid price format",
-                        },
-                      })}
-                      placeholder="Purchase Price"
-                    />
-                    {renderErrorMessage(errors.purchase_price)}
-                    </div>
-                   
-                  </div>
+                 
                   <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                       discount
@@ -462,6 +425,67 @@ function NewProducts() {
                         placeholder="Mobile Number"
                       />
                       {renderErrorMessage(errors.mobileno)}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Unit Price <span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                      <Input
+                        {...register("unit_price", {
+                          required: "Unit price is required",
+                          pattern: {
+                            value: /^\d+(\.\d{1,2})?$/,
+                            message: "Invalid price format",
+                          },
+                        })}
+                        placeholder="Unit Price"
+                      />
+                      {renderErrorMessage(errors.unit_price)}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Purchase price<span className="text-destructive">*</span>
+                    </div>
+                    <div className="w-[350px]">
+                    <Input
+                      {...register("purchase_price",{
+                        required: "Purchase price is required",
+                        pattern: {
+                          value: /^\d+(\.\d{1,2})?$/,
+                          message: "Invalid price format",
+                        },
+                      })}
+                      placeholder="Purchase Price"
+                    />
+                    {renderErrorMessage(errors.purchase_price)}
+                    </div>
+                   
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Company Name
+                    </div>
+                    <div className="w-[350px]">
+                    <Input
+                      {...register("company_name")}
+                      placeholder="Company Name"
+                    />
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Company Gst No.
+                    </div>
+                    <div className="w-[350px]">
+                    <Input
+                      {...register("party_gst")}
+                      placeholder="Gst No."
+                    />
                     </div>
                   </div>
                 </Card>

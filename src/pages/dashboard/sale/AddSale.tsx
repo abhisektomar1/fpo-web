@@ -26,11 +26,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../service/AxiosInstance";
 import { Autocomplete, TextField } from "@mui/material";
 
+const paymentMethods = [
+  { value: "Cash", label: "Cash" },
+  { value: "Card", label: "Card" },
+  { value: "Online", label: "Online" },
+  { value: "Cheque", label: "Cheque" },
+  { value: "Others", label: "Others" },
+];
+
 function NewSale() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const navigate = useNavigate();
-
 
   const {
     register,
@@ -67,28 +74,28 @@ function NewSale() {
   const today = formatDate(new Date());
 
   const onSubmit = async (data: any) => {
-
-    if(data.products.length === 0){
-      toast.error("Please select atleast one product");
-      return
-    }
     
+    if (data.products.length === 0) {
+      toast.error("Please select atleast one product");
+      return;
+    }
+
     setIsLoading(true);
     const saleData = {
       ...data,
       sale_date: today,
     };
 
-      try {
-        await axiosInstance.post(`${BASE_URL_APP}/AddSalesbyFPO`, saleData);
-        toast("Sale Done Successfully");
-        navigate("/dashboard/sale")
-      } catch (error: any) {
-        console.log(error);
-        toast.error(error?.response?.data?.error || "Something went wrong!");
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+      await axiosInstance.post(`${BASE_URL_APP}/AddSalesbyFPO`, saleData);
+      toast("Sale Done Successfully");
+      navigate("/dashboard/sale");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error?.response?.data?.error || "Something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderErrorMessage = (error: FieldError | any) => {
@@ -125,7 +132,7 @@ function NewSale() {
                   </div>
                   <div>
                     <Input
-                    className="w-[350px]"
+                      className="w-[350px]"
                       {...register("mobile_no", {
                         required: true,
                         minLength: 10,
@@ -161,12 +168,40 @@ function NewSale() {
                   </div>
                   <Textarea
                     className="w-[350px]"
-                    {...register("address", {
-                    })}
+                    {...register("address", {})}
                     placeholder="Address"
                   />
                 </div>{" "}
-                <h3 className="my-2 font-medium">Products</h3><span className="text-destructive">*</span>
+                <div className="flex flex-row items-center justify-between gap-4 p-2 ">
+                  <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                    Mode Of Payment
+                  </div>
+                   
+                      <div    className="w-[350px]">
+                      <Controller
+                    name="payment"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Payment Method" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {paymentMethods.map((time) => (
+                            <SelectItem key={time.value} value={time.value}>
+                              {time.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                      </div>
+                </div>
+                <h3 className="my-2 font-medium">Products<span className="text-destructive">*</span></h3>
                 {fields.map((field, index) => (
                   <Card className="mb-2 rounded p-4">
                     <div key={field.id} className="flex flex-row flex-col">
@@ -187,7 +222,7 @@ function NewSale() {
                               id={`product-autocomplete-${index}`}
                               options={data}
                               sx={{ width: 300 }}
-                              getOptionLabel={(option) => option.productName}
+                              getOptionLabel={(option) => option.productName + ",  "  + option.supplier_name}
                               isOptionEqualToValue={(option, value) =>
                                 option.inventory_id === (value as any)
                               }
@@ -289,12 +324,3 @@ function NewSale() {
 }
 
 export default NewSale;
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
-];
