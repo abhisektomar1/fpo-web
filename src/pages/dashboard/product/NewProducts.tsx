@@ -393,7 +393,7 @@ function NewProducts() {
                 </Card>
                 <Card className="my-2 rounded p-4 shadow-md">
                   <CardTitle className="border-b-2 pb-2">
-                    Buyer Details
+                    Seller Details
                   </CardTitle>
                   <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">

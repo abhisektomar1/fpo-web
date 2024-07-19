@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "../../../components/ui/dialog";
 import { BASE_URL_APP } from "../../../utils";
-import { toast } from "react-toastify";
+import { toast, ToastContentProps } from "react-toastify";
 import axios from "axios";
 import { ChevronDown } from "lucide-react";
 import { useAppSelector } from "../../../store/hooks";
@@ -47,8 +47,14 @@ function ProductList() {
       formData.append("excel_file", file);
       formData.append("userid", user?.obj_id);
       formData.append("filter_type", filter);
-      await axios.post(`${BASE_URL_APP}/AddProductDetails_FPO_Csv`, formData);
-      toast("Products added successfully");
+      const res = await axios.post(`${BASE_URL_APP}/AddProductDetails_FPO_Csv`, formData);
+      console.log(res,"res");
+      if(res.data.errors){ 
+        res.data.errors.map((err: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | ((props: ToastContentProps<unknown>) => React.ReactNode) | null | undefined) => {
+          toast.error(err)
+        })
+      }
+      toast(res.data.message || "Something went wrong");
     } catch (error) {
       console.log(error);
     }
