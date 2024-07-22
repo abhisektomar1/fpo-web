@@ -48,7 +48,6 @@ function ProductList() {
       formData.append("userid", user?.obj_id);
       formData.append("filter_type", filter);
       const res = await axios.post(`${BASE_URL_APP}/AddProductDetails_FPO_Csv`, formData);
-      console.log(res,"res");
       if(res.data.errors){ 
         res.data.errors.map((err: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | ((props: ToastContentProps<unknown>) => React.ReactNode) | null | undefined) => {
           toast.error(err)

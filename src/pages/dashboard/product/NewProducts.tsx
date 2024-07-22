@@ -96,7 +96,7 @@ function NewProducts() {
         ...data,
         purchase_price: Number(data.purchase_price),
         selling_price: Number(data.unit_price),
-        discount: Number(data.discount),
+        // discount: Number(data.discount),
         final_price: Number(data.final_price),
         filter_type: id,
         measurement_type: mType,
@@ -110,7 +110,7 @@ function NewProducts() {
         ...dataMy,
         purchase_price: Number(data.purchase_price),
         selling_price: Number(data.unit_price),
-        discount: Number(data.discount),
+        // discount: Number(data.discount),
         final_price: Number(data.final_price),
         filter_type: id,
         measurement_type: mType,
@@ -126,7 +126,7 @@ function NewProducts() {
         ...data,
         purchase_price: Number(data.purchase_price),
         selling_price: Number(data.unit_price),
-        discount: Number(data.discount),
+        // discount: Number(data.discount),
         final_price: Number(data.final_price),
         filter_type: id,
         measurement_type: mType,
@@ -361,7 +361,7 @@ function NewProducts() {
                     Price Details
                   </CardTitle>
                  
-                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                  {/* <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                       discount
                     </div>
@@ -371,7 +371,7 @@ function NewProducts() {
                       placeholder="Price"
                       className="w-[350px]"
                     />
-                  </div>
+                  </div> */}
                   <div className="flex flex-row items-center justify-between gap-4 p-2">
                     <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                       Final Price<span className="text-destructive">*</span>

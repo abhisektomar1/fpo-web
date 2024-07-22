@@ -16,43 +16,44 @@ import axiosInstance from "../../../service/AxiosInstance";
 
 function AddFarmer() {
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset
   } = useForm<any>();
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    console.log(data);
-
     try {
-      axiosInstance.post("/Add_FarmerbyFpo", {
+     await axiosInstance.post("/Add_FarmerbyFpo", {
         ...data,
       });
-      toast("Product details added successfully");
+      toast("Farmer added Successfully!!");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      reset()
+      toast.error(error.response.data.message || "something went weong");
     } finally {
       setIsLoading(false);
+      setOpen(false)
+
     }
   };
 
   return (
-    <Dialog>
-        <DialogTrigger asChild>
-          <Button className="rounded">Add Farmer</Button>
-        </DialogTrigger>
-        <DialogContent className="h-[300px]">
-          <DialogHeader>
-            <DialogTitle>Add Farmer</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="rounded">Add Farmer</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add Farmer</DialogTitle>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <DialogDescription>
-
               <div className="mt-8 flex flex-col items-start justify-start">
                 <label
                   htmlFor="email"
@@ -85,20 +86,74 @@ function AddFarmer() {
                 />
                 {errors.farmer_mobile && (
                   <p style={{ color: "#ff0000", fontSize: 12 }}>
-                Mobile No. is required
+                    Mobile No. is required
+                  </p>
+                )}
+              </div>
+              <div className="mt-8 flex flex-col items-start justify-start">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-primary"
+                >
+                  Farmer Village
+                </label>
+                <Input
+                  {...register("farmer_village", {
+                    required: true,
+                  })}
+                />
+                {errors.farmer_village && (
+                  <p style={{ color: "#ff0000", fontSize: 12 }}>
+                    Farmer Village is required
+                  </p>
+                )}
+              </div>{" "}
+              <div className="mt-8 flex flex-col items-start justify-start">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-primary"
+                >
+                  Farmer Block
+                </label>
+                <Input
+                  {...register("farmer_block", {
+                    required: true,
+                  })}
+                />
+                {errors.farmer_block && (
+                  <p style={{ color: "#ff0000", fontSize: 12 }}>
+                    Farmer Block is required
+                  </p>
+                )}
+              </div>{" "}
+              <div className="mt-8 flex flex-col items-start justify-start">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-primary"
+                >
+                  Land Area
+                </label>
+                <Input
+                  {...register("land_area", {
+                    required: true,
+                    valueAsNumber:true
+                  })}
+                />
+                {errors.land_area && (
+                  <p style={{ color: "#ff0000", fontSize: 12 }}>
+                    Land Area is required
                   </p>
                 )}
               </div>
             </DialogDescription>
-            <Button className="w-full rounded" type="submit">
+            <Button className="w-full rounded mt-2" type="submit">
               {" "}
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Add farmer
             </Button>
-      </form>
-            
-          </DialogHeader>
-        </DialogContent>
+          </form>
+        </DialogHeader>
+      </DialogContent>
     </Dialog>
   );
 }

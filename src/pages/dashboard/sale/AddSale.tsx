@@ -37,21 +37,75 @@ const paymentMethods = [
 function NewSale() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [isFpo, setIsFpo] = useState(false);
   const navigate = useNavigate();
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<any>();
+
+  const numberInput = watch("mobile_no");
+  const watchedForm = watch();
+
+  useEffect(() => {
+    const calculateTotalPrice = (): number => {
+      if (
+        !watchedForm.products ||
+        !Array.isArray(watchedForm.products) ||
+        !data
+      ) {
+        return 0;
+      }
+      return watchedForm.products.reduce((total: number, product: any) => {
+        const selectedProduct = data.find(
+          (p: any) => p.inventory_id === product.inventory_id,
+        );
+        if (selectedProduct && product.Quantity) {
+          return total + selectedProduct.final_price * product.Quantity;
+        }
+        return total;
+      }, 0);
+    };
+
+    setTotalPrice(calculateTotalPrice());
+  }, [watchedForm, data]);
+
+  const checkNumberAndUpdateDiscount = async (number: any) => {
+    try {
+      const res = await axiosInstance.post(
+        `${BASE_URL_APP}/CheckCustomerisFarmerornot`,
+        {
+          mobile_no: number,
+        },
+      );
+      console.log(res);
+      setIsFpo(res.data.associated);
+    } catch (error) {
+      console.error("Error checking number:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (numberInput && numberInput.length === 10) {
+      checkNumberAndUpdateDiscount(numberInput);
+    }
+  }, [numberInput]);
 
   useEffect(() => {
     axiosInstance
       .post(`/GetFPOAllProducts`)
       .then((res) => {
         if (res.status === 200) {
-          setData(res.data.products);
+          setData(
+            res.data.products.filter(
+              (product: any) => product.stock_status !== "Out of Stock",
+            ),
+          );
         } else {
           toast.error("Something went wrong!");
         }
@@ -74,7 +128,6 @@ function NewSale() {
   const today = formatDate(new Date());
 
   const onSubmit = async (data: any) => {
-    
     if (data.products.length === 0) {
       toast.error("Please select atleast one product");
       return;
@@ -162,6 +215,22 @@ function NewSale() {
                       )}
                   </div>
                 </div>
+                {isFpo && (
+                  <div className="flex flex-row items-center justify-between gap-4 p-2">
+                    <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
+                      Buyer Discount
+                    </div>
+                    <div>
+                      <Input
+                        className="w-[350px]"
+                        {...register("discount", {
+                          valueAsNumber: true,
+                        })}
+                        placeholder="Enter Discount"
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                     Address
@@ -176,32 +245,34 @@ function NewSale() {
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                     Mode Of Payment
                   </div>
-                   
-                      <div    className="w-[350px]">
-                      <Controller
-                    name="payment"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Payment Method" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {paymentMethods.map((time) => (
-                            <SelectItem key={time.value} value={time.value}>
-                              {time.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                      </div>
+
+                  <div className="w-[350px]">
+                    <Controller
+                      name="payment"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Payment Method" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {paymentMethods.map((time) => (
+                              <SelectItem key={time.value} value={time.value}>
+                                {time.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </div>
                 </div>
-                <h3 className="my-2 font-medium">Products<span className="text-destructive">*</span></h3>
+                <h3 className="my-2 font-medium">
+                  Products<span className="text-destructive">*</span>
+                </h3>
                 {fields.map((field, index) => (
                   <Card className="mb-2 rounded p-4">
                     <div key={field.id} className="flex flex-row flex-col">
@@ -222,7 +293,14 @@ function NewSale() {
                               id={`product-autocomplete-${index}`}
                               options={data}
                               sx={{ width: 300 }}
-                              getOptionLabel={(option) => option.productName + ",  "  + option.supplier_name}
+                              getOptionLabel={(option) =>
+                                option.productName +
+                                ",  " +
+                                option.supplier_name +
+                                ",  " +
+                                option.final_price +
+                                "Rs"
+                              }
                               isOptionEqualToValue={(option, value) =>
                                 option.inventory_id === (value as any)
                               }
@@ -264,25 +342,6 @@ function NewSale() {
                           placeholder="Quantity"
                         />
                       </div>
-                      <div className="flex flex-row items-start justify-between gap-4 p-2">
-                        <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                          Price
-                        </div>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          className="w-[350px]"
-                          {...register(
-                            `products.${index}.final_price` as const,
-                            {
-                              required: "Price is required",
-                              min: 0,
-                              valueAsNumber: true,
-                            },
-                          )}
-                          placeholder="Price"
-                        />
-                      </div>
                       <Button
                         type="button"
                         className="my-2 w-[100px] self-end rounded"
@@ -294,19 +353,25 @@ function NewSale() {
                   </Card>
                 ))}
                 <div className="mt-2 flex flex-col ">
+                  <div className="flex fex-row justify-between">
+                  <div className="font-roboto mt-4 text-right text-lg font-medium">
+                    Total Price: ₹{totalPrice.toFixed(2)}
+                  </div>
                   <Button
                     type="button"
                     className="my-2 mr-4 w-[100px] self-end rounded"
                     onClick={() =>
                       append({
                         Quantity: 0,
-                        final_price: 0,
                         inventory_id: 0,
                       })
                     }
                   >
                     Add Product
                   </Button>
+                  </div>
+                  
+                
                   <Button type="submit" className="mt-2 w-full rounded">
                     {isLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
