@@ -80,8 +80,9 @@ function ProductList() {
                   <DialogDescription>
                     Donwload the sample file and then upload your data according
                     to the file...
-                    <div className="m-4 mt-10 flex flex-col gap-2">
-                      <a href="/sample/Inputs.xlsx" download="sample/.xlsx">
+                    <div className="my-6 flex flex-col gap-2">
+                      {
+                        filter === "Agricultural Inputs" && <a href="/sample/Inputs.xlsx" download="sample/.xlsx">
                         <Button
                           variant="outline"
                           className="w-full rounded border-primary bg-transparent text-primary hover:text-primary"
@@ -89,8 +90,10 @@ function ProductList() {
                           <img src="/images/exel.svg" className="mr-2" />
                           Download Sample for Agriculture Inputs
                         </Button>
-                      </a>{" "}
-                      <a href="/sample/Crops.xlsx" download="sample.xlsx">
+                      </a>
+                      }
+                       {
+                        filter === "Crops" &&  <a href="/sample/Crops.xlsx" download="sample.xlsx">
                         <Button
                           variant="outline"
                           className="w-full rounded border-primary bg-transparent text-primary hover:text-primary"
@@ -98,8 +101,10 @@ function ProductList() {
                           <img src="/images/exel.svg" className="mr-2" />
                           Download Sample for Crops
                         </Button>
-                      </a>{" "}
-                      <a href="/sample/goods.xlsx" download="sample.xlsx">
+                      </a>
+                      }
+                       {
+                        filter === "Finish Goods" &&   <a href="/sample/goods.xlsx" download="sample.xlsx">
                         <Button
                           variant="outline"
                           className="w-full rounded border-primary bg-transparent text-primary hover:text-primary"
@@ -108,6 +113,10 @@ function ProductList() {
                           Download Sample for Finished Goods
                         </Button>
                       </a>
+                      }
+                     
+                     
+                      <img src="/images/sample.svg" className="mt-2"/>
                       <Button
                         className="mt-4 w-full rounded"
                         onClick={() => {
