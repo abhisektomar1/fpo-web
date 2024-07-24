@@ -68,7 +68,7 @@ function Header() {
   };
 
   return (
-    <header className="flex h-20 items-center justify-between bg-white p-6 px-4 md:px-12">
+    <header className="flex h-20 items-center justify-between bg-white p-6 px-4 md:px-12 border-b">
       <img
         src="/images/agri.png"
         className="w-[180px] hover:cursor-pointer"

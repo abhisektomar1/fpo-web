@@ -36,6 +36,7 @@ import ShopDetails from "./pages/dashboard/profile/ShopDetails";
 import ShopEdit from "./pages/dashboard/profile/ShopEdit";
 import { useEffect } from "react";
 import CursorTrailCanvas from "./components/CursorAnimation";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<AuthGuard />}>
+          <Route path="/dashboard/" element={<Dashboard />} />
             <Route path="/dashboard/userProfile" element={<UserProfile />} />
             <Route path="/dashboard/winners" element={<WinnerList />} />
             <Route path="/dashboard/serviceList" element={<ServiceList />} />

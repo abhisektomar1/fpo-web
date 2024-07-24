@@ -1,1 +1,1 @@
-export const BASE_URL_APP = 'https://www.agrisarathi.com:8000'
+export const BASE_URL_APP = 'https://api.agrisarathi.com/api'
