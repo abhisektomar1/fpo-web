@@ -70,7 +70,7 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<AuthGuard />}>
-          <Route path="/dashboard/" element={<Dashboard />} />
+          <Route path="/dashboard/home" element={<Dashboard />} />
             <Route path="/dashboard/userProfile" element={<UserProfile />} />
             <Route path="/dashboard/winners" element={<WinnerList />} />
             <Route path="/dashboard/serviceList" element={<ServiceList />} />

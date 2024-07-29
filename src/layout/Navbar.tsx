@@ -81,6 +81,12 @@ export default Navbar;
 
 const Home = [
   {
+    name: "Home",
+    imgsize: "",
+    srcs: "/layout/home.svg",
+    url: "/dashboard/home",
+  },
+  {
     name: "Shop Inventory",
     imgsize: "",
     srcs: "/layout/inventrory.svg",

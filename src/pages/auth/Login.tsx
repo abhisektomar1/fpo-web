@@ -36,11 +36,11 @@ function Login() {
       console.log(res);
       dispatch(setUser(res.data))
       localStorage.setItem("userid", res.data.obj_id)
-      navigate("/dashboard/productList")
+      navigate("/dashboard/home")
       toast("Login Success")
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message)
+      toast.error(error.response.data.message || "something went wrong")
     } finally {
       setIsLoading(false);
     }
