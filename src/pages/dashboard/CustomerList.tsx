@@ -6,16 +6,18 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Table from "../../components/table";
 import axiosInstance from "../../service/AxiosInstance";
+import { Box } from "@mui/material";
 
 
 function CustomerList() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
 
+ console.log(data);
  
   useEffect(() => {
     axiosInstance
-      .post(`/GetCustomerRecordSales`)
+      .post(`/GetCustomerDetailsFPO`)
       .then((res) => {
         if (res.status === 200) {
           setData(res.data.data);
@@ -47,28 +49,55 @@ function CustomerList() {
         id: "data",
         columns: [
           {
-            accessorKey: "name",
+            accessorKey: "buyer_name",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Name",
           },
           {
-            accessorKey: "category",
+            accessorKey: "mobile_no",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Category",
+            header: "Mobile No.",
           },
           {
-            accessorKey: "quantity",
+            accessorKey: "address",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Quantity",
+            header: "Address",
           },
           {
-            accessorKey: "total_amount",
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            header: "Total Amount",
+            accessorFn: (row: any) => `${row}`, //accessorFn used to join multiple data into a single cell
+            id: "name", //id is still required when using accessorFn instead of accessorKey
+            header: "Is Farmer",
+            size: 250,
+            Cell: ({ renderedCellValue, row }: any) => (
+           
+                !row?.original.is_farmer ? (
+                 <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    color:"red",
+                  }}
+                >
+                    <span>Not a farmer</span>
+                </Box>
+                ) : (
+                  <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    color:"green",
+                  }}
+                >
+                    <span>Farmer</span>
+                </Box>
+                )
+           
+            ),
           },
         ],
       },
