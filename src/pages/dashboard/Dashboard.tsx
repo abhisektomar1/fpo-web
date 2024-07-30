@@ -119,8 +119,8 @@ function Dashboard() {
   useEffect(() => {
     axiosInstance
       .post(`/GetTotalSalesByFPO`, {
-        filter_type: filter5,
-        sales_status: filter4,
+        filter_type: filter4,
+        sales_status: filter5,
       })
       .then((res) => {
         console.log(res);
