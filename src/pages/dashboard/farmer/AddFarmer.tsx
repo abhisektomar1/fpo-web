@@ -131,17 +131,16 @@ function AddFarmer() {
                   htmlFor="email"
                   className="block text-sm font-medium text-primary"
                 >
-                  Land Area
+                District
                 </label>
                 <Input
-                  {...register("land_area", {
+                  {...register("farmer_district", {
                     required: true,
-                    valueAsNumber:true
                   })}
                 />
-                {errors.land_area && (
+                {errors.farmer_district && (
                   <p style={{ color: "#ff0000", fontSize: 12 }}>
-                    Land Area is required
+                    District is required 
                   </p>
                 )}
               </div>

@@ -82,7 +82,7 @@ function CustomerList() {
                     color:"red",
                   }}
                 >
-                    <span>Not a farmer</span>
+                    <span>Not a Farmer</span>
                 </Box>
                 ) : (
                   <Box

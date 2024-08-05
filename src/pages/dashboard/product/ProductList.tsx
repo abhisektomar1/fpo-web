@@ -71,7 +71,7 @@ function ProductList() {
                   className="rounded border-primary bg-transparent text-primary hover:text-primary"
                 >
                   <img src="/images/exel.svg" className="mr-2" />
-                  Uplaod {filter} Data
+                  Upload {filter} Data
                 </Button>
               </DialogTrigger>
               <DialogContent className="">

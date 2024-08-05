@@ -24,6 +24,7 @@ function Farmer() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const user = useAppSelector((state: any) => state.login.user)
   const [data, setData] = useState<any>([]);
+  
 
  
   useEffect(() => {
@@ -87,10 +88,21 @@ function Farmer() {
             header: "Farmer Mobile No.",
           },
           {
+            accessorKey: "farmer_village",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Farmer Village",
+          }, {
             accessorKey: "farmer_district",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Farmer District",
+          },
+          {
+            accessorKey: "farmer_block",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Farmer Block",
           },
         ],
       },
@@ -115,7 +127,7 @@ function Farmer() {
                 className="rounded border-primary bg-transparent text-primary hover:text-primary"
               >
                 <img src="/images/exel.svg" className="mr-2" />
-                Uplaod Data
+                Upload Data
               </Button>
             </DialogTrigger>
             <DialogContent className="h-[300px]">
