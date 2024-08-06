@@ -92,18 +92,19 @@ function Farmer() {
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Farmer Village",
-          }, {
-            accessorKey: "farmer_district",
-            enableClickToCopy: true,
-            filterVariant: "autocomplete",
-            header: "Farmer District",
-          },
+          }, 
           {
             accessorKey: "farmer_block",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Farmer Block",
+          },{
+            accessorKey: "farmer_district",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Farmer District",
           },
+          
         ],
       },
     ],
