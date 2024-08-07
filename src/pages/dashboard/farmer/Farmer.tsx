@@ -12,7 +12,7 @@ import {
 } from "../../../components/ui/dialog";
 import { BASE_URL_APP } from "../../../utils";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContentProps } from "react-toastify";
 import AddFarmer from "./AddFarmer";
 import { Card } from "../../../components/ui/card";
 import Table from "../../../components/table";
@@ -50,8 +50,17 @@ function Farmer() {
       const formData = new FormData();
       formData.append("csv_file", file);
       formData.append("userid", user?.obj_id);
-      await axios.post(`${BASE_URL_APP}/Add_Farmer_Csv`, formData);
-      toast("Farmers added successfully");
+      const res = await axios.post(`${BASE_URL_APP}/Add_Farmer_Csv`, formData);
+      if(res.data.errors){ 
+        res.data.errors.map((err: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | ((props: ToastContentProps<unknown>) => React.ReactNode) | null | undefined) => {
+          toast.error(err)
+        })
+      }
+      if(res.data.errors_count === 0){
+        toast(res.data.message || "Something went wrong");
+      toast(`${res.data.successful_records_count} farmers added`);
+       }
+    
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");

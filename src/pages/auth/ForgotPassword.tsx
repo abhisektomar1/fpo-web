@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../store/hooks";
-import { setUser } from "../../store/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { BASE_URL_APP } from "../../utils";
 import { Input } from "../../components/ui/input";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "../../components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
