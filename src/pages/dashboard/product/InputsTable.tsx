@@ -41,11 +41,11 @@ function InputsTable() {
   const tableProps = {
     enableColumnFilterModes: true,
     enableColumnOrdering: true,
-    enableGrouping: true,   
+    enableGrouping: true, 
     enableColumnPinning: false,
     enableFacetedValues: false,
     enableRowActionsTrue: true,
-    enableRowSelection: false,
+    enableRowSelection: true,
     showColumnFilters: true,
     showGlobalFilter: true, // Assuming this should also be passed as a prop
   };
@@ -83,6 +83,12 @@ function InputsTable() {
     ],
     [],
   );
+
+  const selectedRowAction = (table:any) =>{
+    table.getSelectedRowModel().flatRows.map((row:any) => {
+      console.log(row.original,"row");
+    });
+  }
   return (
     <div className="tableDatadiv px-3 py-2">
         <Table
@@ -91,6 +97,7 @@ function InputsTable() {
           data={data}
           isEdit={true}
           editClick={editClick}
+          selectedRowAction={selectedRowAction}
         ></Table>
         </div>
   )
