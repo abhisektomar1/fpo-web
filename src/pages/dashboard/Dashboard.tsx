@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import axios from "axios";
 import { BASE_URL_APP } from "../../utils";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 function Dashboard() {
   const [data, setData] = useState<any>([]);
@@ -42,7 +43,6 @@ function Dashboard() {
   const [filter4, setFilter4] = useState<string>("Agricultural Inputs");
   const [filter5, setFilter5] = useState<string>("Online");
 
-  console.log(data5, filter5);
 
   useEffect(() => {
     axiosInstance
@@ -236,8 +236,8 @@ function Dashboard() {
               <CardHeader className="flex justify-between">
                 <div>
                   <CardTitle>Sales Insights</CardTitle>
-                
-                  <CardDescription className="py-2 flex flex-row justify-between items-center">
+
+                  <CardDescription className="flex flex-row items-center justify-between py-2">
                     <Tabs defaultValue="account">
                       <TabsList>
                         <TabsTrigger
@@ -261,21 +261,21 @@ function Dashboard() {
                       </TabsList>
                     </Tabs>
                     <Tabs defaultValue="account" className="my-2">
-                    <TabsList>
-                      <TabsTrigger
-                        value="account"
-                        onClick={() => setFilter5("Online")}
-                      >
-                        Online
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="password"
-                        onClick={() => setFilter5("Offline")}
-                      >
-                        Ofline
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
+                      <TabsList>
+                        <TabsTrigger
+                          value="account"
+                          onClick={() => setFilter5("Online")}
+                        >
+                          Online
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="password"
+                          onClick={() => setFilter5("Offline")}
+                        >
+                          Ofline
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
                   </CardDescription>
                 </div>
               </CardHeader>
@@ -459,56 +459,67 @@ function Dashboard() {
                 </CardFooter>
               </Card>
             </div>
-            <Card>
-              <CardHeader className="flex justify-between">
-                <div>
-                  <CardTitle>Total Farmers</CardTitle>
-                  <CardDescription className="text-green-500">
-                    <Tabs defaultValue="account" className="my-2">
-                      <TabsList>
-                        <TabsTrigger
-                          value="account"
-                          onClick={() => setFilter3("all")}
-                        >
-                          All
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="password"
-                          onClick={() => setFilter3("active")}
-                        >
-                          Active
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="passwords"
-                          onClick={() => setFilter3("inactive")}
-                        >
-                          Inactive
-                        </TabsTrigger>
-                      </TabsList>
-                    </Tabs>
-                  </CardDescription>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <UsersIcon className="h-5 w-5 text-blue-500" />
-                  <p className="text-sm font-medium">{data3?.count}</p>
-                </div>
+            <Card className="relative w-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-xl font-bold">
+                  Total Farmers
+                </CardTitle>
+                <Tabs defaultValue="account" className="my-2">
+                  <TabsList>
+                    <TabsTrigger
+                      value="account"
+                      onClick={() => setFilter3("all")}
+                    >
+                      All
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="password"
+                      onClick={() => setFilter3("active")}
+                    >
+                      Active
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="passwords"
+                      onClick={() => setFilter3("inactive")}
+                    >
+                      Inactive
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
               </CardHeader>
-              <CardContent className="h-[200px] space-y-4 overflow-y-auto">
-                {data3?.farmers?.map((item: any, index: any) => (
-                  <div className="flex items-center space-x-4">
-                    <Avatar>
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>U{index + 1}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{item?.buyer_name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {item?.mobile_no}
-                      </p>
-                    </div>
+              <CardContent>
+                <div className="mb-4 flex items-baseline space-x-2">
+                  <div className="text-3xl font-bold">{data3?.count}</div>
+                  <div className="text-sm text-gray-500">
+                    Farmers Registered
                   </div>
-                ))}
+                </div>
+                <div className="grid grid-cols-2 gap-4 overflow-auto h-[200px]">
+                  {data3?.farmers?.map((farmer:any, index:any) => (
+                    <div key={index} className="flex items-center space-x-3">
+                    <Avatar className="w-10 h-10">
+                <AvatarImage src="/placeholder-avatar.jpg" alt={farmer.name} />
+                <AvatarFallback>{farmer?.buyer_name.charAt(0)}</AvatarFallback>
+              </Avatar>
+                      <div>
+                        <div className="text-sm font-medium">{farmer?.buyer_name}</div>
+                        <div className="text-xs text-gray-500">
+                          {farmer?.mobile_no}
+                        </div>
+                        <div className="mt-1 flex items-center space-x-1">
+                          <div className="h-1.5 w-1.5 rounded-full bg-green-500"></div>
+                          <span className="text-xs text-green-500">
+                            Actively Selling
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
+              {/* <div className="absolute right-2 top-1/2 -translate-y-1/2 transform">
+                <ChevronRight className="h-6 w-6 text-gray-300" />
+              </div> */}
             </Card>
           </div>
         </div>

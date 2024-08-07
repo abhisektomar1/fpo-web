@@ -126,11 +126,11 @@ function ChangePassword() {
                 </Button>
               </div>
             </form>
-            {/* <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
-              navigate("/signup")
+            <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
+              navigate("/login")
             }}>
-              SIGN UP
-            </Button> */}
+              Login
+            </Button>
           </div>
         </div>
       </div>
