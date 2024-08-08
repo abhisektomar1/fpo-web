@@ -499,7 +499,7 @@ function Dashboard() {
                     <div key={index} className="flex items-center space-x-3">
                     <Avatar className="w-10 h-10">
                 <AvatarImage src="/placeholder-avatar.jpg" alt={farmer.name} />
-                <AvatarFallback>{farmer?.buyer_name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{farmer?.buyer_name?.charAt(0)}</AvatarFallback>
               </Avatar>
                       <div>
                         <div className="text-sm font-medium">{farmer?.buyer_name}</div>

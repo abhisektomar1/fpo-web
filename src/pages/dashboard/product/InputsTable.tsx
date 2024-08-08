@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Table from '../../../components/table'
 import axiosInstance from '../../../service/AxiosInstance';
 import { toast } from 'react-toastify';
-import { Box } from '@mui/material';
-import { BASE_URL_APP } from '../../../utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function InputsTable() {
 
@@ -12,7 +10,6 @@ function InputsTable() {
 
     
     const [data, setData] = useState<any>([]);
-    console.log(data);
 
     useEffect(() => {
         axiosInstance
@@ -33,7 +30,6 @@ function InputsTable() {
       }, []);
 
       const editClick = (e: React.MouseEvent, row: any) =>{
-        console.log(row);
            navigate(`/dashboard/ProductEdit/${row.product_id}`)
       }
 
@@ -85,9 +81,12 @@ function InputsTable() {
   );
 
   const selectedRowAction = (table:any) =>{
+    const arr:any =[];
     table.getSelectedRowModel().flatRows.map((row:any) => {
       console.log(row.original,"row");
+      arr.push(row.original.product_id)
     });
+
   }
   return (
     <div className="tableDatadiv px-3 py-2">
