@@ -3,6 +3,7 @@ import Table from '../../../components/table'
 import axiosInstance from '../../../service/AxiosInstance';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import EditAll from './EditAll';
 
 function InputsTable() {
 
@@ -10,7 +11,8 @@ function InputsTable() {
 
     
     const [data, setData] = useState<any>([]);
-
+    const [open, setOpen] = useState(false)
+    const [id, setID] = useState<any>([])
     useEffect(() => {
         axiosInstance
           .post(`/GetFPOProductDetails`,{
@@ -69,10 +71,16 @@ function InputsTable() {
             header: "Measurement Type",
           },
           {
-            accessorKey: "selling_price",
+            accessorKey: "measurement_unit",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Selling Price",
+            header: "Measurement Unit",
+          },
+          {
+            accessorKey: "quantity",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Quantity",
           },
         ],
       },
@@ -81,12 +89,13 @@ function InputsTable() {
   );
 
   const selectedRowAction = (table:any) =>{
+    setOpen(true)
     const arr:any =[];
     table.getSelectedRowModel().flatRows.map((row:any) => {
       console.log(row.original,"row");
       arr.push(row.original.product_id)
     });
-
+      setID(arr)
   }
   return (
     <div className="tableDatadiv px-3 py-2">
@@ -98,6 +107,7 @@ function InputsTable() {
           editClick={editClick}
           selectedRowAction={selectedRowAction}
         ></Table>
+        <EditAll open={open} setOpen={setOpen} id={id} />
         </div>
   )
 }

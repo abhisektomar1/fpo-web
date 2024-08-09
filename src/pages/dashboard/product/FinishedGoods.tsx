@@ -5,11 +5,13 @@ import { Box } from "@mui/material";
 import { BASE_URL_APP } from "../../../utils";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../service/AxiosInstance";
+import EditAll from "./EditAll";
 
 function FinishedGoods() {
   const [data, setData] = useState<any>([]);
   const navigate = useNavigate()
-
+  const [open, setOpen] = useState(false)
+  const [id, setID] = useState<any>([])
 
   useEffect(() => {
     axiosInstance
@@ -40,7 +42,7 @@ function FinishedGoods() {
     enableColumnPinning: false,
     enableFacetedValues: false,
     enableRowActionsTrue: true,
-    enableRowSelection: false,
+    enableRowSelection: true,
     showColumnFilters: true,
     showGlobalFilter: true, // Assuming this should also be passed as a prop
   };
@@ -68,20 +70,38 @@ function FinishedGoods() {
             header: "Measurement Type",
           },
           {
-            accessorKey: "selling_price",
+            accessorKey: "measurement_unit",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
-            header: "Selling Price",
+            header: "Measurement Unit",
+          },
+          {
+            accessorKey: "quantity",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Quantity",
           },
         ],
       },
     ],
     [],
   );
+
+  
+  const selectedRowAction = (table:any) =>{
+    setOpen(true)
+    const arr:any =[];
+    table.getSelectedRowModel().flatRows.map((row:any) => {
+      console.log(row.original,"row");
+      arr.push(row.original.product_id)
+    });
+      setID(arr)
+  }
   return (
     <div className="tableDatadiv px-3 py-2">
-      <Table {...tableProps} columns={columns} data={data} isEdit={true}
+      <Table {...tableProps} columns={columns} data={data} isEdit={true} selectedRowAction={selectedRowAction}
           editClick={editClick}></Table>
+          <EditAll open={open} setOpen={setOpen} id={id} />
     </div>
   );
 }

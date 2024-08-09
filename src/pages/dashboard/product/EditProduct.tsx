@@ -120,7 +120,7 @@ console.log(dataa);
         `${BASE_URL_APP}/UpdateProduct_DeatilsFPO`,
         {
           ...dataa,
-          product_id: id,
+          product_id: [id],
         }
       );
       toast("Product Updated Successfully");

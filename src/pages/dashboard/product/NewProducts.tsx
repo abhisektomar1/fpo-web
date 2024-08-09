@@ -276,7 +276,7 @@ function NewProducts() {
                     <div className="w-[350px]">
                       <Input
                         {...register("quantity", {
-                          required: "Product name is required",
+                          required: "Quantity  is required",
                         })}
                         placeholder="Quantity"
                       />
