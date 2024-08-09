@@ -92,7 +92,6 @@ function InputsTable() {
     setOpen(true)
     const arr:any =[];
     table.getSelectedRowModel().flatRows.map((row:any) => {
-      console.log(row.original,"row");
       arr.push(row.original.product_id)
     });
       setID(arr)

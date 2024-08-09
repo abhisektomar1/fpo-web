@@ -79,9 +79,7 @@ function EditAll({open, setOpen, id}:any) {
                   </p>
                 )}
                 </div>
-                
                   </div>
-                 
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
                     Quantity
