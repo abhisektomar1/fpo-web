@@ -18,13 +18,14 @@ import { Card } from "../../../components/ui/card";
 import Table from "../../../components/table";
 import { useAppSelector } from "../../../store/hooks";
 import axiosInstance from "../../../service/AxiosInstance";
+import EditFarmer from "./EditFarmer";
 
 function Farmer() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const user = useAppSelector((state: any) => state.login.user)
   const [data, setData] = useState<any>([]);
-  
+  const [open, setOpen] = useState(false)
 
  
   useEffect(() => {
@@ -73,7 +74,7 @@ function Farmer() {
     enableGrouping: true,
     enableColumnPinning: false,
     enableFacetedValues: false,
-    enableRowActionsTrue: false, 
+    enableRowActionsTrue: true, 
     enableRowSelection: false,
     showColumnFilters: true,
     showGlobalFilter: true, // Assuming this should also be passed as a prop
@@ -120,8 +121,29 @@ function Farmer() {
     [],
   );
 
+  const handleDelete = async (e: React.MouseEvent, row: any) => {
+    try {
+      const response = await axiosInstance.post('/DeleteFarmerbyFPO',{
+        farmer_id:[row.farmer_id]
+      });
+      toast("Farmer Deleted Successfully!!");
+    } catch (error) {
+      console.error("Error deleting farmer:", error);
+      // Handle the error (e.g., show error message to user)
+      if (error instanceof Error) {
+        // You can use a toast or any other method to show the error to the user
+        toast.error(`Failed to delete: ${error.message}`);
+      } else {
+        toast.error('An unknown error occurred');
+      }
+    } finally{
+       window.location.reload();
+    }
+  };
 
-  
+  const editClick = (e: React.MouseEvent, row: any) =>{
+    navigate(`/dashboard/editFarmer/${row.farmer_id}`)
+}
 
   return (
     <Layout>
@@ -186,9 +208,14 @@ function Farmer() {
               {...tableProps}
               columns={columns}
               data={data}
+              isDelete={true}
+              deleteClick={handleDelete}
+              isEdit={true}
+              editClick={editClick}
             ></Table>
           </div>
       </Card>
+     
     </Layout>
   );
 }

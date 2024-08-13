@@ -191,8 +191,10 @@ function Dashboard() {
 
   useEffect(() => {
     axios
-      .post(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        user_language: lan,
+      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
+        params: {
+          user_language: lan
+        }
       })
       .then((r) => {
         console.log(r);

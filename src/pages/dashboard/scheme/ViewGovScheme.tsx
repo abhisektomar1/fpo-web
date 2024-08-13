@@ -13,9 +13,11 @@ function ViewGovScheme() {
 
   useEffect(() => {
     axios
-      .post(`${BASE_URL_APP}/GovtSchemesbyID`, {
-        user_language: lan,
-        govt_id: id,
+      .get(`${BASE_URL_APP}/GovtSchemesbyID`, {
+        params: {
+          user_language: lan,
+          govt_id: id,
+        }
       })
       .then((r) => {
         console.log(r);
@@ -36,8 +38,10 @@ function ViewGovScheme() {
 
   useEffect(() => {
     axios
-      .post(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        user_language: lan,
+      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
+        params: {
+          user_language: lan
+        }
       })
       .then((r) => {
         console.log(r);
@@ -77,7 +81,7 @@ function ViewGovScheme() {
               {data?.scheme_name}
             </div>
             <img
-              src={`${BASE_URL_APP}${data?.image}`}
+              src={`${BASE_URL_APP}${data?.scheme_image}`}
               className="my-2 rounded"
             />
             <h3 className="py-2 font-medium">Overview</h3>

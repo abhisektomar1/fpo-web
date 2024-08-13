@@ -16,8 +16,10 @@ function GovSchemes() {
 
   useEffect(() => {
     axios
-      .post(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        user_language:lan,
+      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
+        params: {
+          user_language: lan
+        }
       })
       .then((r) => {
         console.log(r);
@@ -76,7 +78,7 @@ function GovSchemes() {
                     key={index}
                     className="mt-2 flex flex-row gap-2 border-b border-gray-300 pb-4 hover:cursor-pointer hover:shadow-lg rounded"
                     onClick={() => {
-                      navigae(`/dashboard/governmentSchemes/${item.scheme_id}`)
+                      navigae(`/dashboard/governmentSchemes/${item.id}`)
                     }}
                   >
                     <img
@@ -108,7 +110,7 @@ function GovSchemes() {
                     key={index}
                     className="mt-1 flex flex-row gap-2 border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg rounded"
                     onClick={() => {
-                      navigae(`/dashboard/governmentSchemes/${item.scheme_id}`)
+                      navigae(`/dashboard/governmentSchemes/${item.id}`)
                     }}
                   >
                     <img
@@ -138,7 +140,7 @@ function GovSchemes() {
                     key={index}
                     className="mt-1 flex flex-row gap-2 border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg rounded"
                     onClick={() => {
-                      navigae(`/dashboard/governmentSchemes/${item.scheme_id}`)
+                      navigae(`/dashboard/governmentSchemes/${item.id}`)
                     }}
                   >
                     <img

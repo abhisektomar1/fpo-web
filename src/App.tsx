@@ -38,6 +38,7 @@ import { useEffect } from "react";
 import CursorTrailCanvas from "./components/CursorAnimation";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ChangePassword from "./pages/auth/ChangePassword";
+import EditFarmer from "./pages/dashboard/farmer/EditFarmer";
 
 function App() {
 
@@ -96,6 +97,8 @@ function App() {
 
             <Route path="/dashboard/farmer" element={<Farmer />} />
             <Route path="/dashboard/addFarmer" element={<AddFarmer />} />
+            <Route path="/dashboard/editFarmer/:id" element={<EditFarmer />} />
+
 
             <Route path="/dashboard/sale" element={<SaleList />} />
             <Route path="/dashboard/addSale" element={<AddSale />} />
