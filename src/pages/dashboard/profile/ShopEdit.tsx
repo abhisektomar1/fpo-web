@@ -58,7 +58,6 @@ const ShopEdit: React.FC = () => {
       .post(`/GetFPODetails`)
       .then((res) => {
         console.log(res.data.shop_details[0]);
-        setData(res.data);
         
         // Set form values when data is loaded
         if (res.data.shop_details && res.data.shop_details[0]) {
@@ -130,7 +129,7 @@ const ShopEdit: React.FC = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                  Shop Contact No.
+                  Shop Latitude
                   </div>
                   <div className="w-[350px]">
                     <Input
@@ -143,7 +142,7 @@ const ShopEdit: React.FC = () => {
                 </div>
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                  Shop Contact No.
+                  Shop Longitude
                   </div>
                   <div className="w-[350px]">
                     <Input
@@ -175,7 +174,6 @@ const ShopEdit: React.FC = () => {
                 </Select>
               )}
             />
-
             <Controller
               name="shop_closetime"
               control={control}

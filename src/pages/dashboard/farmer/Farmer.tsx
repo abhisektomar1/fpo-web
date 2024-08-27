@@ -114,7 +114,12 @@ function Farmer() {
             filterVariant: "autocomplete",
             header: "Farmer District",
           },
-          
+          {
+            accessorKey: "created_at",
+            enableClickToCopy: true,
+            filterVariant: "autocomplete",
+            header: "Created At",
+          },
         ],
       },
     ],

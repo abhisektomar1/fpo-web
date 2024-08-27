@@ -40,7 +40,6 @@ function AddFarmer() {
     } finally {
       setIsLoading(false);
       setOpen(false)
-
     }
   };
 
