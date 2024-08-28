@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   // Get the token from localStorage
   const token = localStorage.getItem("token");
-  console.log(token);
   
   // If token exists, add it to the Authorization header
   if (token) {

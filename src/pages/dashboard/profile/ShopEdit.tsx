@@ -55,13 +55,13 @@ const ShopEdit: React.FC = () => {
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetFPODetails`)
+      .get(`/fposupplier/UserProfileView`)
       .then((res) => {
-        console.log(res.data.shop_details[0]);
-        
         // Set form values when data is loaded
-        if (res.data.shop_details && res.data.shop_details[0]) {
-          const shopDetails = res.data.shop_details[0];
+        if (res.data.data.shop_details) {
+          const shopDetails = res.data.data.shop_details;
+          console.log(shopDetails);
+          
           setValue('shop_opentime', shopDetails.shop_opentime);
           setValue('shop_closetime', shopDetails.shop_closetime);
           setValue('shop_opendays', shopDetails.shop_opendays);
@@ -81,7 +81,7 @@ const ShopEdit: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const res = await axiosInstance.post(`/FPO_profile_update`, data);
+       await axiosInstance.put(`/fposupplier/UpdateProfile`, data);
       toast("Profile Updated Successfully!!");
       navigate("/dashboard/userProfile")
 

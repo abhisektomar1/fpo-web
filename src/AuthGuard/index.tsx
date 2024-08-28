@@ -8,7 +8,6 @@ const AuthGuard = () => {
 //hiii
     const user = useAppSelector((state: any) => state.login.user)
 
-console.log(user);
 
 
   if (!user?.tokens?.access) {

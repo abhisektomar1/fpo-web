@@ -202,9 +202,9 @@ function Header() {
           <img src="/images/bell.svg" alt="Notifications" className="h-5 w-5" />
         </Button>
         <div className="relative" ref={menuRef}>
-          {headerData?.basic_info[0]?.profile ? (
+          {headerData?.profile.profile ? (
             <img
-              src={`${BASE_URL_APP}/media/${headerData?.basic_info[0]?.profile}`}
+              src={`${BASE_URL_APP}${headerData?.profile?.profile}`}
               onClick={toggleMenu}
               className="h-12 w-12 border-primary border-2 rounded-full hover:cursor-pointer"
             />
