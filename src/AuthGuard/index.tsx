@@ -8,9 +8,10 @@ const AuthGuard = () => {
 //hiii
     const user = useAppSelector((state: any) => state.login.user)
 
+console.log(user);
 
 
-  if (!user?.obj_id) {
+  if (!user?.tokens?.access) {
     return <Navigate to="/login" replace />;
   }
 
