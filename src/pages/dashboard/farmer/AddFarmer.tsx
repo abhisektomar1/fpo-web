@@ -29,7 +29,7 @@ function AddFarmer() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-     await axiosInstance.post("/Add_FarmerbyFpo", {
+     await axiosInstance.post("/fposupplier/FarmerByFPO", {
         ...data,
       });
       toast("Farmer added Successfully!!");

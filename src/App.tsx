@@ -34,14 +34,12 @@ import PurchaseList from "./pages/dashboard/PurchaseList";
 import SupplierList from "./pages/dashboard/SupplierList";
 import ShopDetails from "./pages/dashboard/profile/ShopDetails";
 import ShopEdit from "./pages/dashboard/profile/ShopEdit";
-import { useEffect } from "react";
 import CursorTrailCanvas from "./components/CursorAnimation";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ChangePassword from "./pages/auth/ChangePassword";
 import EditFarmer from "./pages/dashboard/farmer/EditFarmer";
 
 function App() {
-
 
   return (
     <>
@@ -61,7 +59,6 @@ function App() {
         <Routes>
           {/* Root Route */}
           <Route path="/" element={<RootRedirect />} />
-
           {/* Auth */}
           <Route path="/login" element={<Login />} />
           <Route path="/Signup" element={<SignUp />} />

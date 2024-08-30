@@ -19,30 +19,49 @@ import Table from "../../../components/table";
 import { useAppSelector } from "../../../store/hooks";
 import axiosInstance from "../../../service/AxiosInstance";
 import EditFarmer from "./EditFarmer";
+import { MRT_PaginationState } from "material-react-table";
 
 function Farmer() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const user = useAppSelector((state: any) => state.login.user)
   const [data, setData] = useState<any>([]);
-  const [open, setOpen] = useState(false)
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
- 
   useEffect(() => {
-    axiosInstance
-      .post(`/GetallFarmerbyFPO`)
-      .then((res:any) => {
-        if (res.status === 200) {
-          setData(res.data.data);
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get('/fposupplier/GetAllFarmerbyFPO', {
+          params: {
+            page: pagination.pageIndex + 1, // API typically uses 1-based indexing
+            page_size: pagination.pageSize,
+          },
+        });
+
+        if (response.status === 200) {
+          setData(response.data.results);
+          // Assuming the API returns total pages information
+          setTotalPages(response.data.count);
         } else {
           toast.error("Something went wrong!");
         }
-      })
-      .catch((error) => {
-        console.log(error);
+      } catch (error: any) {
+        console.error(error);
         toast.error(error?.response?.data?.message || "Something went wrong!");
-      });
-  }, []);
+      }
+    };
+
+    fetchData();
+  }, [pagination.pageIndex, pagination.pageSize]);
+
+  const handlePaginationChange = (newPagination: MRT_PaginationState) => {
+    setPagination(newPagination);
+  };
+
 
   const handleFileChange = async (event: any) => {
     
@@ -210,6 +229,8 @@ function Farmer() {
       </div>
       <div className="tableDatadiv px-3 py-2">
             <Table
+            pagination={pagination}
+            setPagination={setPagination}
               {...tableProps}
               columns={columns}
               data={data}
@@ -217,6 +238,7 @@ function Farmer() {
               deleteClick={handleDelete}
               isEdit={true}
               editClick={editClick}
+              rowCount={totalPages}
             ></Table>
           </div>
       </Card>

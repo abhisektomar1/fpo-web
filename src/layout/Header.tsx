@@ -10,6 +10,7 @@ import { setLan } from "../store/lanSlice";
 import { CircleUserRound, UserRound } from "lucide-react";
 import axiosInstance from "../service/AxiosInstance";
 import { useHeaderData } from "../hooks/useHeaderData";
+import { cn } from "../lib/utils";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -184,7 +185,7 @@ function Header() {
               </button>
               <button
                 className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                onClick={() => {
+                 onClick={() => {
                   dispatch(setLan(2));
                   setIsMenuOpen1(false);
                 }}
