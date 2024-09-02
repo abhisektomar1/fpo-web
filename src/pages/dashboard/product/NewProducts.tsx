@@ -40,17 +40,15 @@ function NewProducts() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetCrops`, {
-        user_language: lan,
-      })
+      .get(`/fposupplier/GetallCrops`)
       .then((res) => setCrops(res.data.data))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetCropVariety`, {
-        crop_id: cropsId,
+      .get(`/fposupplier/GetCropVariety`, {
+      params:{crop_id: cropsId,}
       })
       .then((res) => setVariety(res.data.data))
       .catch((error) => console.log(error));
@@ -98,7 +96,6 @@ function NewProducts() {
         selling_price: Number(data.unit_price),
         // discount: Number(data.discount),
         final_price: Number(data.final_price),
-        filter_type: id,
         measurement_type: mType,
         selling_status: status,
         producttype: productType,
@@ -112,7 +109,6 @@ function NewProducts() {
         selling_price: Number(data.unit_price),
         // discount: Number(data.discount),
         final_price: Number(data.final_price),
-        filter_type: id,
         measurement_type: mType,
         selling_status: status,
         producttype: productType,
@@ -128,7 +124,6 @@ function NewProducts() {
         selling_price: Number(data.unit_price),
         // discount: Number(data.discount),
         final_price: Number(data.final_price),
-        filter_type: id,
         measurement_type: mType,
         selling_status: status,
         producttype: productType,
@@ -139,7 +134,7 @@ function NewProducts() {
 
     try {
       const res = await axiosInstance.post(
-        `${BASE_URL_APP}/AddProductDetails_FPO`,
+        `${BASE_URL_APP}/fposupplier/ProductDetailsAddGetDelUpdate`,
         dataa,
       );
       toast("Product Created Successfully");
@@ -229,7 +224,7 @@ function NewProducts() {
                           }}
                         >
                           <SelectTrigger className="w-[350px]">
-                            <SelectValue placeholder="Select Crop Type" />
+                            <SelectValue placeholder="Select Variety Type" />
                           </SelectTrigger>
                           <SelectContent>
                             {variety?.map((crop: any) => (

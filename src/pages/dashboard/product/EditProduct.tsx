@@ -19,6 +19,7 @@ import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../service/AxiosInstance";
+import { log } from "node:console";
 
 function EditProduct() {
   const { id } = useParams();
@@ -36,28 +37,23 @@ function EditProduct() {
 
   const [data, setData] = useState<any>();
   const lan = useAppSelector((state) => state.lan.lan);
-  const user = useAppSelector((state: any) => state.login.user);
-  const [productType, setProductType] = useState<string>("");
-  console.log(data,crops);
+  const [productType, setProductType] = useState<number>();
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetCrops`, {
-        user_language: lan,
-      })
+      .get(`/fposupplier/GetallCrops`)
       .then((res) => setCrops(res.data.data))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetCropVariety`, {
-        crop_id: cropsId,
+      .get(`/fposupplier/GetCropVariety`, {
+        params: { crop_id: cropsId },
       })
       .then((res) => setVariety(res.data.data))
       .catch((error) => console.log(error));
   }, [cropsId]);
-
   const {
     register,
     handleSubmit,
@@ -69,12 +65,12 @@ function EditProduct() {
   });
 
   const onSubmit = async (data: any) => {
-    const { composition,manufacturerName, ...dataMy } = data;
-   
+    const { composition, manufacturerName, ...dataMy } = data;
+
     setIsLoading(true);
 
     let dataa;
-    if (productType === "Finish Goods") {
+    if (productType === 3) {
       dataa = {
         ...data,
         purchase_price: Number(data.purchase_price),
@@ -86,7 +82,7 @@ function EditProduct() {
         measurement_unit: Number(data.measurement_unit),
         quantity: Number(data.quantity),
       };
-    } else if (productType === "Crops") {
+    } else if (productType === 2) {
       dataa = {
         ...dataMy,
         purchase_price: Number(data.purchase_price),
@@ -113,16 +109,12 @@ function EditProduct() {
         quantity: Number(data.quantity),
       };
     }
-console.log(dataa);
 
     try {
-       await axiosInstance.post(
-        `${BASE_URL_APP}/UpdateProduct_DeatilsFPO`,
-        {
-          ...dataa,
-          product_id: [id],
-        }
-      );
+      await axiosInstance.put(`/fposupplier/ProductDetailsAddGetDelUpdate`, {
+        ...dataa,
+        product_id: [id],
+      });
       toast("Product Updated Successfully");
       navigate("/dashboard/productList");
     } catch (error: any) {
@@ -135,32 +127,30 @@ console.log(dataa);
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetSingleProduct_FPODetails`, {
-        product_id: id,
+      .get(`/fposupplier/ProductDetailsAddGetDelUpdate`, {
+        params: { product_id: id },
       })
-      .then((res) => setData(res.data.success))
+      .then((res) => setData(res.data.data[0]))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
-    setProductType(data?.productype);
-    setValue("productName", data?.productname);
-    setValue("productDescription", data?.productdescription);
-    setValue("productDescription", data?.productdescription);
-    setValue("unit_price", data?.unit_price);
-    setValue("purchase_price", data?.purchase_price);
-    setValue("discount", data?.discount);
-    setValue("final_price", data?.final_price_unit);
+    setProductType(data?.fk_productype_id);
+    setValue("productName", data?.productName);
+    setValue("productDescription", data?.productDescription);
+    setValue("unit_price", data?.prices[0]?.unit_price);
+    setValue("purchase_price", data?.prices[0]?.purchase_price);
+    setValue("discount", data?.prices[0]?.discount);
+    setValue("final_price", data?.prices[0]?.final_price_unit);
     setValue("measurement_unit", data?.measurement_unit);
     setValue("quantity", data?.quantity);
     setValue("Category", data?.Category);
     setValue("composition", data?.composition);
     setValue("manufacturerName", data?.manufacturerName);
-    
     setmType(data?.measurement_type);
     SetStatus(data?.selling_status);
     setCropsId(data?.crop_id);
-     setVarietyId(data?.variety);
+    setVarietyId(data?.variety);
   }, [data, setValue]);
 
   const renderErrorMessage = (error: FieldError | any) => {
@@ -200,7 +190,7 @@ console.log(dataa);
                     className="w-[350px]"
                   />
                 </div>
-                {productType === "Crops" && (
+                {productType === 2 && (
                   <>
                     <div className="flex flex-row items-center justify-between gap-4 p-2">
                       <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
@@ -268,7 +258,7 @@ console.log(dataa);
                     </div>
                   </>
                 )}
-                {productType !== "Crops" && (
+                {productType !== 2 && (
                   <>
                     <div className="flex flex-row items-center justify-between gap-4 p-2">
                       <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">

@@ -4,6 +4,7 @@ import axiosInstance from '../../../service/AxiosInstance';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import EditAll from './EditAll';
+import { MRT_PaginationState } from 'material-react-table';
 
 function InputsTable() {
 
@@ -13,14 +14,24 @@ function InputsTable() {
     const [data, setData] = useState<any>([]);
     const [open, setOpen] = useState(false)
     const [id, setID] = useState<any>([])
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [pagination, setPagination] = useState<MRT_PaginationState>({
+      pageIndex: 0,
+      pageSize: 5,
+    });
     useEffect(() => {
         axiosInstance
-          .post(`/GetFPOProductDetails`,{
-            filter_type:"Agricultural Inputs"
+          .get(`fposupplier/GetProductDetailsByFPOSupplier`,{
+            params:{
+              producttype:1,
+              page: pagination.pageIndex + 1, // API typically uses 1-based indexing
+              page_size: pagination.pageSize,
+            }
           })
           .then((res) => {
-            if(res.data.status === "success"){
-                setData(res.data.products);
+            if(res.data.results.status === "success"){
+                setData(res.data.results.data);
+                setTotalPages(res.data.count)
             } else{
                 toast.error("something went wrong!")
             }
@@ -32,7 +43,7 @@ function InputsTable() {
       }, []);
 
       const editClick = (e: React.MouseEvent, row: any) =>{
-           navigate(`/dashboard/ProductEdit/${row.product_id}`)
+           navigate(`/dashboard/ProductEdit/${row.id}`)
       }
 
 
@@ -99,6 +110,10 @@ function InputsTable() {
   return (
     <div className="tableDatadiv px-3 py-2">
         <Table
+          pagination={pagination}
+          setPagination={setPagination}
+          rowCount={totalPages}
+
           {...tableProps}
           columns={columns}
           data={data}

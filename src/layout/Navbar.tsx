@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { ChevronFirst, ChevronLast } from "lucide-react";
 
 function Navbar() {
   const nav = useAppSelector((state) => state.nav.nav);
   const [expanded, setExpanded] = useState(true);
-  const location = useLocation();
 
   let items;
   if (nav === "Home") {
@@ -87,25 +86,25 @@ const Home = [
     url: "/dashboard/home",
   },
   {
-    name: "Shop Inventory",
+    name: "Shop's Inventory",
     imgsize: "",
     srcs: "/layout/inventrory.svg",
     url: "/dashboard/inventoryList",
   },
   {
-    name: "Sale",
+    name: "Sales",
     imgsize: "",
     srcs: "/layout/sale.svg",
     url: "/dashboard/sale",
   },
   {
-    name: "Product",
+    name: "Products",
     imgsize: "",
     srcs: "/layout/product.svg",
     url: "/dashboard/ProductList",
   },
   {
-    name: "Add Farmer",
+    name: "Farmers",
     imgsize: "",
     srcs: "/images/farmer.svg",
     url: "/dashboard/farmer",

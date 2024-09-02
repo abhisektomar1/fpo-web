@@ -58,9 +58,7 @@ function Farmer() {
     fetchData();
   }, [pagination.pageIndex, pagination.pageSize]);
 
-  const handlePaginationChange = (newPagination: MRT_PaginationState) => {
-    setPagination(newPagination);
-  };
+
 
 
   const handleFileChange = async (event: any) => {
@@ -69,8 +67,7 @@ function Farmer() {
     try {
       const formData = new FormData();
       formData.append("csv_file", file);
-      formData.append("userid", user?.obj_id);
-      const res = await axios.post(`${BASE_URL_APP}/Add_Farmer_Csv`, formData);
+      const res = await axiosInstance.post(`/fposupplier/AddFarmerCsv`, formData);
       if(res.data.errors){ 
         res.data.errors.map((err: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | ((props: ToastContentProps<unknown>) => React.ReactNode) | null | undefined) => {
           toast.error(err)
@@ -147,8 +144,8 @@ function Farmer() {
 
   const handleDelete = async (e: React.MouseEvent, row: any) => {
     try {
-      const response = await axiosInstance.post('/DeleteFarmerbyFPO',{
-        farmer_id:[row.farmer_id]
+     await axiosInstance.delete('/fposupplier/FarmerByFPO',{
+        data:{farmer_id:[row.farmer_id]}
       });
       toast("Farmer Deleted Successfully!!");
     } catch (error) {
@@ -161,7 +158,7 @@ function Farmer() {
         toast.error('An unknown error occurred');
       }
     } finally{
-       window.location.reload();
+          window.location.reload();
     }
   };
 

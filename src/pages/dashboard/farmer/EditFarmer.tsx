@@ -31,8 +31,10 @@ function EditFarmer() {
   } = useForm<any>();
   useEffect(() => {
     axiosInstance
-      .post(`/GetSingleFarmerDetailsbyFPO`,{
+      .get(`/fposupplier/GetSingleFarmerDetailsbyFPO`,{
+        params: {
         farmer_id:id
+        },
       })
       .then((res) => {
         setData(res.data.data[0]);
@@ -55,7 +57,7 @@ function EditFarmer() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-     await axiosInstance.put("/UpdateFarmerByFPO", {
+     await axiosInstance.put("/fposupplier/FarmerByFPO", {
         ...data,
         farmer_id:id
       });
@@ -65,7 +67,7 @@ function EditFarmer() {
     } catch (error: any) {
       console.log(error);
       reset()
-      toast.error(error.response.data.message || "something went weong");
+      toast.error(error.response.data.msg || "something went weong");
     } finally {
       setIsLoading(false);
 
