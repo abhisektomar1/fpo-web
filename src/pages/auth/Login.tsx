@@ -45,7 +45,7 @@ function Login() {
       toast("Login Success")
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data.message || "something went wrong")
+      toast.error(error.response.data.error || "something went wrong")
     } finally {
       setIsLoading(false);
     }

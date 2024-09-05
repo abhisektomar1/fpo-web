@@ -5,6 +5,7 @@ import { BASE_URL_APP } from "../../../utils";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
+import axiosInstance from "../../../service/AxiosInstance";
 
 function ViewGovScheme() {
   const [data, setData] = useState<any>();
@@ -12,11 +13,10 @@ function ViewGovScheme() {
   const lan = useAppSelector((state) => state.lan.lan);
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL_APP}/GovtSchemesbyID`, {
+    axiosInstance
+      .get(`/fposupplier/FPOGovtSchemesbyID`, {
         params: {
-          user_language: lan,
-          govt_id: id,
+            govt_id: id,
         }
       })
       .then((r) => {
@@ -37,14 +37,9 @@ function ViewGovScheme() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        params: {
-          user_language: lan
-        }
-      })
+    axiosInstance
+      .get(`/fposupplier/GetallFPOGovtSchemes`)
       .then((r) => {
-        console.log(r);
         if (r.data.status === "success") {
           setDataa(r.data.schemes);
         } else {
@@ -55,7 +50,7 @@ function ViewGovScheme() {
         console.log(r);
         toast.error(r.message);
       });
-  }, [lan]);
+  }, [lan])
 
   const handleSearchChange = (event: any) => {
     setSearchQuery(event.target.value);

@@ -121,12 +121,12 @@ const Home = [
   //   srcs: "/layout/purchase.svg",
   //   url: "/dashboard/PurchaseList",
   // },
-  {
-    name: "Customer Details",
-    imgsize: "",
-    srcs: "/layout/customer.svg",
-    url: "/dashboard/CustomerList",
-  },
+  // {
+  //   name: "Customer Details",
+  //   imgsize: "",
+  //   srcs: "/layout/customer.svg",
+  //   url: "/dashboard/CustomerList",
+  // },
   // {
   //   name: "Comminity Forum",
   //   imgsize: "",

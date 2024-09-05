@@ -10,7 +10,6 @@ import { setLan } from "../store/lanSlice";
 import { CircleUserRound, UserRound } from "lucide-react";
 import axiosInstance from "../service/AxiosInstance";
 import { useHeaderData } from "../hooks/useHeaderData";
-import { cn } from "../lib/utils";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -165,7 +164,7 @@ function Header() {
       </div>
 
       <div className="hidden items-center space-x-5 md:flex">
-        <div className="relative" ref={menuRef1}>
+        {/* <div className="relative" ref={menuRef1}>
           <img
             src="/images/language.svg"
             alt="Language"
@@ -194,7 +193,7 @@ function Header() {
               </button>
             </div>
           )}
-        </div>
+        </div> */}
         <div className="flex items-center space-x-2 rounded-full border border-gray-400 p-2">
           <img src="/images/coin.svg" alt="Coins" className="h-5 w-6" />
           <span>300</span>

@@ -40,14 +40,14 @@ function NewProducts() {
 
   useEffect(() => {
     axiosInstance
-      .get(`/fposupplier/GetallCrops`)
+      .get(`/fposupplier/GetallFPOCrops`)
       .then((res) => setCrops(res.data.data))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     axiosInstance
-      .get(`/fposupplier/GetCropVariety`, {
+      .get(`/fposupplier/GetFPOCropVariety`, {
       params:{crop_id: cropsId,}
       })
       .then((res) => setVariety(res.data.data))
@@ -141,7 +141,7 @@ function NewProducts() {
       navigate("/dashboard/productList");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response.data.error_message || "something went weong");
     } finally {
       setIsLoading(false);
     }
@@ -206,9 +206,9 @@ function NewProducts() {
                             {crops?.map((crop: any) => (
                               <SelectItem
                                 key={crop.id}
-                                value={crop.id.toString()}
+                                value={crop?.crop_id?.toString()}
                               >
-                                {crop.crop_name}
+                                {crop.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -230,9 +230,9 @@ function NewProducts() {
                             {variety?.map((crop: any) => (
                               <SelectItem
                                 key={crop.id}
-                                value={crop.id.toString()}
+                                value={crop.variety_id.toString()}
                               >
-                                {crop.variety}
+                                {crop.name}
                               </SelectItem>
                             ))}
                           </SelectContent>

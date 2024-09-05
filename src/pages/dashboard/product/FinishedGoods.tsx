@@ -39,7 +39,7 @@ function FinishedGoods() {
         console.log(error);
         toast.error(error?.response?.data?.message || "Something went wrong!");
       });
-  }, []);
+  }, [pagination.pageIndex, pagination.pageSize]);
   const editClick = (e: React.MouseEvent, row: any) => {
     console.log(row);
     navigate(`/dashboard/ProductEdit/${row.id}`);

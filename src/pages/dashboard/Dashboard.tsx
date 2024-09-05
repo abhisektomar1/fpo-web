@@ -28,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import axios from "axios";
 import { BASE_URL_APP } from "../../utils";
-import { ChevronDown, ChevronRight } from "lucide-react";
+
 
 function Dashboard() {
   const [data, setData] = useState<any>([]);
@@ -40,21 +40,19 @@ function Dashboard() {
   const [filter, setFilter] = useState<string>("Online");
   const [filter2, setFilter2] = useState<string>("Online");
   const [filter3, setFilter3] = useState<string>("all");
-  const [filter4, setFilter4] = useState<string>("Agricultural Inputs");
+  const [filter4, setFilter4] = useState<number>(1);
   const [filter5, setFilter5] = useState<string>("Online");
 
 
   useEffect(() => {
     axiosInstance
-      .post(`/FPOInventoryinstock`, {
-        filter_type: filter,
+      .get(`/fposupplier/InventoryInoutStock`, {
+        params:{filter_type: filter,
+        status:"instock"
+      }
       })
       .then((res) => {
-        if (res.status === 200) {
-          setData(res.data);
-        } else {
-          toast.error("Something went wrong!");
-        }
+        setData(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -64,15 +62,12 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/FPOInventoryoutstock`, {
-        filter_type: filter2,
-      })
+      .get(`/fposupplier/InventoryInoutStock`,  {
+        params:{filter_type: filter2,
+        status:"outstock"
+      }})
       .then((res) => {
-        if (res.status === 200) {
           setData2(res.data);
-        } else {
-          toast.error("Something went wrong!");
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -82,15 +77,11 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/CheckBuyerisFarmerorNot`, {
-        filter_type: filter3,
-      })
+      .get(`/fposupplier/CheckBuyerisFarmerorNot`,{
+        params:{filter_type: filter3,
+      }})
       .then((res) => {
-        if (res.status === 200) {
           setData3(res.data);
-        } else {
-          toast.error("Something went wrong!");
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -100,15 +91,11 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetTotalSalesByFPOMonth`, {
-        filter_type: filter4,
-      })
+      .get(`/fposupplier/MonthlySales`, {
+        params:{filter_type: filter4,
+      }})
       .then((res) => {
-        if (res.status === 200) {
           setData4(res.data);
-        } else {
-          toast.error("Something went wrong!");
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -118,18 +105,12 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetTotalSalesByFPO`, {
-        filter_type: filter4,
-        sales_status: filter5,
-      })
+      .get(`/fposupplier/TotalSales`,{
+        params:{filter_type: filter4,
+          sales_status:filter5
+      }})
       .then((res) => {
-        console.log(res);
-
-        if (res.status === 200) {
           setData5(res.data);
-        } else {
-          toast.error("Something went wrong!");
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -156,7 +137,7 @@ function Dashboard() {
     const monthlyTotals: any = {};
 
     // Process each sale
-    apiResponse?.sales?.forEach((sale: any) => {
+    apiResponse?.forEach((sale: any) => {
       // Parse the date
       const date = new Date(sale.sales_date);
       // Get the month name
@@ -190,14 +171,9 @@ function Dashboard() {
   const lan = useAppSelector((state) => state.lan.lan);
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        params: {
-          user_language: lan
-        }
-      })
+    axiosInstance
+      .get(`/fposupplier/GetallFPOGovtSchemes`)
       .then((r) => {
-        console.log(r);
         if (r.data.status === "success") {
           setDataa(r.data.schemes);
         } else {
@@ -243,19 +219,19 @@ function Dashboard() {
                     <Tabs defaultValue="account">
                       <TabsList>
                         <TabsTrigger
-                          onClick={() => setFilter4("Agricultural Inputs")}
+                          onClick={() => setFilter4(1)}
                           value="account"
                         >
                           Agricultural Inputs
                         </TabsTrigger>
                         <TabsTrigger
-                          onClick={() => setFilter4("Crops")}
+                          onClick={() => setFilter4(2)}
                           value="password"
                         >
                           Crops
                         </TabsTrigger>
                         <TabsTrigger
-                          onClick={() => setFilter4("Finish Goods")}
+                          onClick={() => setFilter4(3)}
                           value="regt"
                         >
                           Finished Product
@@ -311,39 +287,43 @@ function Dashboard() {
                     </div>
                   </div>
                 </div>
-                <CardContent>
-                  <ChartContainer config={chartConfig}>
-                    <AreaChart
-                      accessibilityLayer
-                      data={chartData}
-                      margin={{
-                        left: 12,
-                        right: 12,
-                      }}
-                    >
-                      <CartesianGrid vertical={false} />
-                      <XAxis
-                        dataKey="month"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={8}
-                        tickFormatter={(value) => value.slice(0, 3)}
-                      />
-                      <YAxis aria-activ />
+                <CardContent>{
+                  data4.length ? <><ChartContainer config={chartConfig}>
+                  <AreaChart
+                    accessibilityLayer
+                    data={chartData}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      tickFormatter={(value) => value.slice(0, 3)}
+                    />
+                    <YAxis aria-activ />
 
-                      <ChartTooltip
-                        cursor={true}
-                        content={<ChartTooltipContent indicator="line" />}
-                      />
-                      <Area
-                        dataKey="desktop"
-                        type="natural"
-                        fill="var(--color-desktop)"
-                        fillOpacity={0.2}
-                        stroke="var(--color-desktop)"
-                      />
-                    </AreaChart>
-                  </ChartContainer>
+                    <ChartTooltip
+                      cursor={true}
+                      content={<ChartTooltipContent indicator="line" />}
+                    />
+                    <Area
+                      dataKey="desktop"
+                      type="natural"
+                      fill="var(--color-desktop)"
+                      fillOpacity={0.2}
+                      stroke="var(--color-desktop)"
+                    />
+                  </AreaChart>
+                </ChartContainer></> : <div className="flex flex-row justify-center items-center h-40">
+                  <h1 className="text-2xl font-bold">No Sale Data</h1>
+                  </div>
+                  }
+                  
                 </CardContent>
 
                 {/* <LinechartChart className="aspect-[4/3] w-full" /> */}
@@ -375,7 +355,7 @@ function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="h-[170px] overflow-y-auto">
-                  {data?.InStock?.map((item: any) => (
+                  {data?.inventory?.map((item: any) => (
                     <>
                       <div className="flex justify-between">
                         <div>
@@ -397,7 +377,7 @@ function Dashboard() {
                 <CardFooter className="mt-8 flex justify-between  pt-2">
                   <div className="flex items-center space-x-2">
                     <PackageIcon className="h-5 w-5 text-blue-500" />
-                    <p className="text-sm font-medium">{data?.InStockTotal}</p>
+                    <p className="text-sm font-medium">{data?.total_inventory}</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Total Stock In
@@ -429,7 +409,7 @@ function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent className="h-[170px] overflow-y-auto">
-                  {data2?.OutofStock?.map((item: any) => (
+                  {data2?.inventory?.map((item: any) => (
                     <>
                       <div className="flex justify-between">
                         <div>
@@ -452,7 +432,7 @@ function Dashboard() {
                   <div className="flex items-center space-x-2">
                     <PackageIcon className="h-5 w-5 text-blue-500" />
                     <p className="text-sm font-medium">
-                      {data2?.OutStockTotal}
+                      {data2?.total_inventory}
                     </p>
                   </div>
                   <p className="text-sm text-muted-foreground">

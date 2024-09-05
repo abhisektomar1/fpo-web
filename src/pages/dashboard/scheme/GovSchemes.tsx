@@ -6,6 +6,7 @@ import { BASE_URL_APP } from "../../../utils";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../store/hooks";
+import axiosInstance from "../../../service/AxiosInstance";
 
 
 function GovSchemes() {
@@ -15,14 +16,9 @@ function GovSchemes() {
   const lan = useAppSelector((state) => state.lan.lan)
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL_APP}/GetallGovtSchemes`, {
-        params: {
-          user_language: lan
-        }
-      })
+    axiosInstance
+      .get(`/fposupplier/GetallFPOGovtSchemes`)
       .then((r) => {
-        console.log(r);
         if (r.data.status === "success") {
           setData(r.data.schemes);
         } else {
@@ -33,7 +29,7 @@ function GovSchemes() {
         console.log(r);
         toast.error(r.message);
       });
-  }, [lan]);
+  }, [lan])
 
   const handleSearchChange = (event: any) => {
     setSearchQuery(event.target.value);

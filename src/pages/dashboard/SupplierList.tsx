@@ -6,20 +6,30 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Table from "../../components/table";
 import axiosInstance from "../../service/AxiosInstance";
+import { MRT_PaginationState } from "material-react-table";
 
 
 function SupplierList() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
-
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
  
   useEffect(() => {
     axiosInstance
-      .post(`/GetFPOSuppliersInfo`)
+      .get(`/fposupplier/PurchaseInfo`, {
+        params:{
+          page: pagination.pageIndex + 1, // API typically uses 1-based indexing
+          page_size: pagination.pageSize,
+        }
+      })
       .then((res) => {
-        if (res.status === 200) {
-          setData(res.data.supplier_details
-          );
+        if (res.data.results.status === "success") {
+          setData(res.data.results.data);
+          setTotalPages(res.data.count)
         } else {
           toast.error("Something went wrong!");
         }
@@ -28,7 +38,7 @@ function SupplierList() {
         console.log(error);
         toast.error(error.message);
       });
-  }, []);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const tableProps = {
     enableColumnFilterModes: true,
@@ -48,25 +58,25 @@ function SupplierList() {
         id: "data",
         columns: [
           {
-            accessorKey: "suppliername",
+            accessorKey: "party_name",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Supplier Name",
           },
           {
-            accessorKey: "suppliermobileno",
+            accessorKey: "party_mobileno",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Supplier Mobile No.",
           },
           {
-            accessorKey: "product_names",
+            accessorKey: "party_name",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Product Name",
           },
           {
-            accessorKey: "producttype",
+            accessorKey: "product_type",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Product Type",
@@ -78,7 +88,7 @@ function SupplierList() {
             header: "Quantity",
           },
           {
-            accessorKey: "unit_pricebought",
+            accessorKey: "unit_price",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Unit Bought Price",
@@ -112,6 +122,9 @@ function SupplierList() {
          
           <div className="tableDatadiv px-3 py-2">
             <Table
+              pagination={pagination}
+              setPagination={setPagination}
+              rowCount={totalPages}
               {...tableProps}
               columns={columns}
               data={data}

@@ -66,7 +66,7 @@ function NewSale() {
           (p: any) => p.inventory_id === product.inventory_id,
         );
         if (selectedProduct && product.Quantity) {
-          return total + selectedProduct.final_price * product.Quantity;
+          return total + selectedProduct.product_price * product.Quantity;
         }
         return total;
       }, 0);
@@ -77,13 +77,12 @@ function NewSale() {
 
   const checkNumberAndUpdateDiscount = async (number: any) => {
     try {
-      const res = await axiosInstance.post(
-        `${BASE_URL_APP}/CheckCustomerisFarmerornot`,
+      const res = await axiosInstance.get(
+        `/fposupplier/CheckCustomerisFarmerornot`,
         {
-          mobile_no: number,
+         params: {mobile: number,}
         },
       );
-      console.log(res);
       setIsFpo(res.data.associated);
     } catch (error) {
       console.error("Error checking number:", error);
@@ -98,17 +97,14 @@ function NewSale() {
 
   useEffect(() => {
     axiosInstance
-      .post(`/GetFPOAllProducts`)
+      .get(`/fposupplier/GetAllProductsFponSupplier`)
       .then((res) => {
-        if (res.status === 200) {
           setData(
             res.data.products.filter(
               (product: any) => product.stock_status !== "Out of Stock",
             ),
           );
-        } else {
-          toast.error("Something went wrong!");
-        }
+        
       })
       .catch((error) => {
         console.log(error);
@@ -140,12 +136,12 @@ function NewSale() {
     };
 
     try {
-      await axiosInstance.post(`${BASE_URL_APP}/AddSalesbyFPO`, saleData);
+      await axiosInstance.post(`/fposupplier/AddGetSales`, saleData);
       toast("Sale Done Successfully");
       navigate("/dashboard/sale");
     } catch (error: any) {
       console.log(error);
-      toast.error(error?.response?.data?.error || "Something went wrong!");
+      toast.error(error?.response?.data?.error_message || "Something went wrong!");
     } finally {
       setIsLoading(false);
     }
@@ -298,7 +294,7 @@ function NewSale() {
                                 ",  " +
                                 option.supplier_name +
                                 ",  " +
-                                option.final_price +
+                                option.product_price +
                                 "Rs"
                               }
                               isOptionEqualToValue={(option, value) =>

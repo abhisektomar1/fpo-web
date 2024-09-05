@@ -18,16 +18,22 @@ import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
 import { BASE_URL_APP } from "../../../utils";
 import axiosInstance from "../../../service/AxiosInstance";
+import { MRT_PaginationState } from "material-react-table";
+import { log } from "node:console";
 
 function InventoryList() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
-  const [filter, setFilter] = useState<string>("Agricultural Inputs");
+  const [filter, setFilter] = useState<number>(1);
   const [selectedRow, setSelectedRow] = useState<any>();
   const [open, setOpen] = React.useState<boolean>(false);
   const [stock, setStock] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -35,14 +41,21 @@ function InventoryList() {
   const handleClose = () => {
     setOpen(false);
   };
+
   useEffect(() => {
     axiosInstance
-      .post(`/ShowInventory`, {
-        filter_type: filter,
+      .get(`/fposupplier/InventorySection`, {
+        params:{filter_type: filter,
+          page: pagination.pageIndex + 1, // API typically uses 1-based indexing
+          page_size: pagination.pageSize,
+        }
       })
       .then((res: any) => {
-        if (res.status === 200) {
-          setData(res.data);
+        console.log(res);
+        
+        if (res.data.results.status === "success") {
+          setData(res.data.results.inventory);
+          setTotalPages(res.data.count)
         } else {
           toast.error("Something went wrong!");
         }
@@ -51,7 +64,7 @@ function InventoryList() {
         console.log(error);
         toast.error(error?.response?.data?.error || "Something went wrong!");
       });
-  }, [filter]);
+  }, [filter, pagination.pageIndex, pagination.pageSize]);
 
   const tableProps = {
     enableColumnFilterModes: true,
@@ -71,7 +84,7 @@ function InventoryList() {
         id: "data",
         columns: [
           {
-            accessorKey: "product_name",
+            accessorKey: "productName",
             enableClickToCopy: true,
             filterVariant: "autocomplete",
             header: "Product Name",
@@ -125,14 +138,13 @@ function InventoryList() {
 
   const onSubmit = async () => {
     setIsLoading(true);
-    console.log(data);
 
     try {
-      const res = await axiosInstance.post(
-        `${BASE_URL_APP}/UpdateInventorybyFPO`,
+       await axiosInstance.put(
+        `/fposupplier/InventorySection`,
         {
           inventory_id: selectedRow?.inventory_id,
-          new_stock: stock,
+          new_stock: Number(stock),
         },
       );
       toast("quantity changed successfully");
@@ -153,20 +165,23 @@ function InventoryList() {
         <Tabs defaultValue="account">
           <TabsList>
             <TabsTrigger
-              onClick={() => setFilter("Agricultural Inputs")}
+              onClick={() => setFilter(1)}
               value="account"
             >
               Agricultural Inputs
             </TabsTrigger>
-            <TabsTrigger onClick={() => setFilter("Crops")} value="password">
+            <TabsTrigger onClick={() => setFilter(2)} value="password">
               Crops
             </TabsTrigger>
-            <TabsTrigger onClick={() => setFilter("Finish Goods")} value="regt">
+            <TabsTrigger onClick={() => setFilter(3)} value="regt">
               Finished Product
             </TabsTrigger>
           </TabsList>
           <div className="tableDatadiv px-3 py-2">
             <Table
+              pagination={pagination}
+              setPagination={setPagination}
+              rowCount={totalPages}
               {...tableProps}
               columns={columns}
               data={data}

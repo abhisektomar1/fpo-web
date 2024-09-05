@@ -40,7 +40,7 @@ function InputsTable() {
             console.log(error);
             toast.error(error?.response?.data?.message || "Something went wrong!");
           });
-      }, []);
+      }, [pagination.pageIndex, pagination.pageSize]);
 
       const editClick = (e: React.MouseEvent, row: any) =>{
            navigate(`/dashboard/ProductEdit/${row.id}`)
@@ -113,7 +113,6 @@ function InputsTable() {
           pagination={pagination}
           setPagination={setPagination}
           rowCount={totalPages}
-
           {...tableProps}
           columns={columns}
           data={data}
