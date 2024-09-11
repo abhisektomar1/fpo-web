@@ -62,7 +62,6 @@ function NewProduct() {
     }
   };
   return (
-    <Layout>
       <Card className="p-4">
         <h1 className="p-3 text-xl font-bold">New Product</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -208,7 +207,6 @@ function NewProduct() {
           </div>
         </form>
       </Card>
-    </Layout>
   );
 }
 

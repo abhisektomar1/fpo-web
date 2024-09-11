@@ -13,7 +13,7 @@ function Navbar() {
   }
 
   return (
-    <div className="relative mr-1 bg-white border">
+    <div className="relative  bg-white border">
       <nav className="flex h-screen flex-col items-center justify-start bg-gray-100 p-4">
         <button
           onClick={() => setExpanded((curr) => !curr)}

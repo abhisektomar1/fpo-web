@@ -20,21 +20,22 @@ import { useAppSelector } from "../../../store/hooks";
 import axiosInstance from "../../../service/AxiosInstance";
 import EditFarmer from "./EditFarmer";
 import { MRT_PaginationState } from "material-react-table";
+import FarmerTableSkeleton from "../../../components/TableLoading";
 
 function Farmer() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const user = useAppSelector((state: any) => state.login.user)
   const [data, setData] = useState<any>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 5,
   });
-
+const [loading, setIsLoading] = useState(false)
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const response = await axiosInstance.get('/fposupplier/GetAllFarmerbyFPO', {
           params: {
             page: pagination.pageIndex + 1, // API typically uses 1-based indexing
@@ -52,6 +53,8 @@ function Farmer() {
       } catch (error: any) {
         console.error(error);
         toast.error(error?.response?.data?.message || "Something went wrong!");
+      } finally {
+        setIsLoading(false)
       }
     };
 
@@ -167,80 +170,83 @@ function Farmer() {
 }
 
   return (
-    <Layout>
         <Card className="p-4">
-      {" "}
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="p-3 text-2xl font-bold">Farmer Details</h1>
-        <div className="flex flex-row gap-4">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="rounded border-primary bg-transparent text-primary hover:text-primary"
-              >
-                <img src="/images/exel.svg" className="mr-2" />
-                Upload Data
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="h-[300px]">
-              <DialogHeader>
-                <DialogTitle>Upload Farmer Data</DialogTitle>
-                <DialogDescription>
-                  Donwload the sample file and then upload your data according
-                  to the file...
-                  <div className="m-4 mt-40 flex flex-row gap-2">
-                    <a href="/sample/farmer.xlsx" download="sample.xlsx">
-                      <Button
-                        variant="outline"
-                        className="rounded border-primary bg-transparent text-primary hover:text-primary"
-                      >
-                        <img src="/images/exel.svg" className="mr-2" />
-                        Download Sample
-                      </Button>
-                    </a>
-                    <Button
-                      className="w-60 rounded"
-                      onClick={() => {
-                        if (fileInputRef.current) fileInputRef.current.click();
-                      }}
-                    >
-                      Upload Csv
-                    </Button>
-                    <input
-                      ref={fileInputRef}
-                      id="xlsx-upload"
-                      type="file"
-                      accept=".xlsx"
-                      onChange={(event) => handleFileChange(event)}
-                      className="hidden"
-                      onFocus={() => console.log("Input focused")}
-                    />
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-          <AddFarmer />
-        </div>
-      </div>
-      <div className="tableDatadiv px-3 py-2">
-            <Table
-            pagination={pagination}
-            setPagination={setPagination}
-              {...tableProps}
-              columns={columns}
-              data={data}
-              isDelete={true}
-              deleteClick={handleDelete}
-              isEdit={true}
-              editClick={editClick}
-              rowCount={totalPages}
-            ></Table>
-          </div>
+      {
+          loading ? 
+          <FarmerTableSkeleton />
+           :  <><div className="flex flex-row items-center justify-between">
+           <h1 className="p-3 text-2xl font-bold">Farmer Details</h1>
+           <div className="flex flex-row gap-4">
+             <Dialog>
+               <DialogTrigger asChild>
+                 <Button
+                   variant="outline"
+                   className="rounded border-primary bg-transparent text-primary hover:text-primary"
+                 >
+                   <img src="/images/exel.svg" className="mr-2" />
+                   Upload Data
+                 </Button>
+               </DialogTrigger>
+               <DialogContent className="h-[300px]">
+                 <DialogHeader>
+                   <DialogTitle>Upload Farmer Data</DialogTitle>
+                   <DialogDescription>
+                     Donwload the sample file and then upload your data according
+                     to the file...
+                     <div className="m-4 mt-40 flex flex-row gap-2">
+                       <a href="/sample/farmer.xlsx" download="sample.xlsx">
+                         <Button
+                           variant="outline"
+                           className="rounded border-primary bg-transparent text-primary hover:text-primary"
+                         >
+                           <img src="/images/exel.svg" className="mr-2" />
+                           Download Sample
+                         </Button>
+                       </a>
+                       <Button
+                         className="w-60 rounded"
+                         onClick={() => {
+                           if (fileInputRef.current) fileInputRef.current.click();
+                         }}
+                       >
+                         Upload Csv
+                       </Button>
+                       <input
+                         ref={fileInputRef}
+                         id="xlsx-upload"
+                         type="file"
+                         accept=".xlsx"
+                         onChange={(event) => handleFileChange(event)}
+                         className="hidden"
+                         onFocus={() => console.log("Input focused")}
+                       />
+                     </div>
+                   </DialogDescription>
+                 </DialogHeader>
+               </DialogContent>
+             </Dialog>
+             <AddFarmer />
+           </div>
+         </div>
+         <div className="tableDatadiv px-3 py-2">
+               <Table
+               pagination={pagination}
+               setPagination={setPagination}
+                 {...tableProps}
+                 columns={columns}
+                 data={data}
+                 isDelete={true}
+                 deleteClick={handleDelete}
+                 isEdit={true}
+                 editClick={editClick}
+                 rowCount={totalPages}
+               ></Table>
+             </div>
+             </>
+      }
+      
       </Card>
      
-    </Layout>
   );
 }
 

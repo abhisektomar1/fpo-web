@@ -109,7 +109,6 @@ function SupplierList() {
   
 
   return (
-    <Layout>
       <Card className="p-4">
         <div className="flex flex-row justify-between">
           <h1 className="p-3 text-xl font-bold">Supplier List</h1>
@@ -131,7 +130,6 @@ function SupplierList() {
             ></Table>
           </div>
       </Card>
-    </Layout>
   );
 }
 

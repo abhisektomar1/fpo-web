@@ -65,11 +65,10 @@ const FPODetails = () => {
     
     const file = imageRef.current.files[0];
     const formData = new FormData();
-    formData.append("profile_image", file);
-    formData.append("userid", user?.obj_id);
+    formData.append("profile", file);
 
     try {
-      await axios.post(`${BASE_URL_APP}/FPOProfilePictureUpdate`, 
+      await axiosInstance.put(`${BASE_URL_APP}/fposupplier/UpdateProfilePicture`, 
         formData
       );
       toast("Profile Updated Successfully");

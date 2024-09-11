@@ -29,6 +29,7 @@ function InputsTable() {
             }
           })
           .then((res) => {
+
             if(res.data.results.status === "success"){
                 setData(res.data.results.data);
                 setTotalPages(res.data.count)
@@ -40,7 +41,7 @@ function InputsTable() {
             console.log(error);
             toast.error(error?.response?.data?.message || "Something went wrong!");
           });
-      }, [pagination.pageIndex, pagination.pageSize]);
+      }, [pagination.pageIndex, pagination.pageSize,]);
 
       const editClick = (e: React.MouseEvent, row: any) =>{
            navigate(`/dashboard/ProductEdit/${row.id}`)

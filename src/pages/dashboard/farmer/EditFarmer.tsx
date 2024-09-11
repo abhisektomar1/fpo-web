@@ -75,7 +75,6 @@ function EditFarmer() {
   };
 
   return (
-    <Layout>
  <div className="m-4 grid w-2/3 grid-cols-1 gap-4">
  <Card className="rounded border-none p-4 shadow-md">
           <h1>Edit Farmer</h1>
@@ -178,7 +177,6 @@ function EditFarmer() {
           </form>
           </Card>
           </div>
-      </Layout>
   );
 }
 

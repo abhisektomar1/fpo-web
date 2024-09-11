@@ -1,15 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Layout from "../../../layout";
-import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 import { Card } from "../../../components/ui/card";
 import { useNavigate } from "react-router-dom";
 import Table from "../../../components/table";
 import axiosInstance from "../../../service/AxiosInstance";
 import { toast } from "react-toastify";
-import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
 import { Button } from "../../../components/ui/button";
-import {Loader2 } from "lucide-react";
-import { BASE_URL_APP } from "../../../utils";
 import { MRT_PaginationState } from "material-react-table";
 
 function SaleList() {
@@ -42,7 +37,7 @@ function SaleList() {
         console.log(error);
         toast.error(error.message);
       });
-  }, []);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const tableProps = {
     enableColumnFilterModes: true,
@@ -95,7 +90,6 @@ function SaleList() {
   
 
   return (
-    <Layout>
       <Card className="p-4">
         <div className="flex flex-row justify-between">
           <h1 className="p-3 text-xl font-bold">Sale List</h1>
@@ -117,7 +111,6 @@ function SaleList() {
             ></Table>
           </div>
       </Card>
-    </Layout>
   );
 }
 

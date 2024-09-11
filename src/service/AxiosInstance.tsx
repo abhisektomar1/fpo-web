@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { BASE_URL_APP } from '../utils';
-import { log } from 'node:console';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL_APP,

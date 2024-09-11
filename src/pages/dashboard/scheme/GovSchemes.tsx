@@ -47,7 +47,6 @@ function GovSchemes() {
     return text;
   };
   return (
-    <Layout>
       <div className="container mx-auto p-1">
         <div className="relative grid grid-cols-1 gap-4 md:grid-cols-12">
           <div className="col-span-12 p-4 md:col-span-8">
@@ -159,7 +158,6 @@ function GovSchemes() {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }
 

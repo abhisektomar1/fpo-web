@@ -13,7 +13,6 @@ import ShopDetails from "./ShopDetails";
 const UserProfile = () => {
   
   return (
-    <Layout>
       <Card className="p-4 py-8">
         <Tabs defaultValue="account">
           <TabsList>
@@ -28,7 +27,6 @@ const UserProfile = () => {
           </TabsContent>
         </Tabs>
       </Card>
-    </Layout>
   );
 };
 

@@ -29,7 +29,6 @@ import { useAppSelector } from "../../store/hooks";
 import axios from "axios";
 import { BASE_URL_APP } from "../../utils";
 
-
 function Dashboard() {
   const [data, setData] = useState<any>([]);
   const [data2, setData2] = useState<any>([]);
@@ -43,13 +42,10 @@ function Dashboard() {
   const [filter4, setFilter4] = useState<number>(1);
   const [filter5, setFilter5] = useState<string>("Online");
 
-
   useEffect(() => {
     axiosInstance
       .get(`/fposupplier/InventoryInoutStock`, {
-        params:{filter_type: filter,
-        status:"instock"
-      }
+        params: { filter_type: filter, status: "instock" },
       })
       .then((res) => {
         setData(res.data);
@@ -62,12 +58,11 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .get(`/fposupplier/InventoryInoutStock`,  {
-        params:{filter_type: filter2,
-        status:"outstock"
-      }})
+      .get(`/fposupplier/InventoryInoutStock`, {
+        params: { filter_type: filter2, status: "outstock" },
+      })
       .then((res) => {
-          setData2(res.data);
+        setData2(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -77,11 +72,11 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .get(`/fposupplier/CheckBuyerisFarmerorNot`,{
-        params:{filter_type: filter3,
-      }})
+      .get(`/fposupplier/CheckBuyerisFarmerorNot`, {
+        params: { filter_type: filter3 },
+      })
       .then((res) => {
-          setData3(res.data);
+        setData3(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -92,10 +87,10 @@ function Dashboard() {
   useEffect(() => {
     axiosInstance
       .get(`/fposupplier/MonthlySales`, {
-        params:{filter_type: filter4,
-      }})
+        params: { filter_type: filter4 },
+      })
       .then((res) => {
-          setData4(res.data);
+        setData4(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -105,12 +100,11 @@ function Dashboard() {
 
   useEffect(() => {
     axiosInstance
-      .get(`/fposupplier/TotalSales`,{
-        params:{filter_type: filter4,
-          sales_status:filter5
-      }})
+      .get(`/fposupplier/TotalSales`, {
+        params: { filter_type: filter4, sales_status: filter5 },
+      })
       .then((res) => {
-          setData5(res.data);
+        setData5(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -203,7 +197,6 @@ function Dashboard() {
   };
 
   return (
-    <Layout>
       <div className="relative grid grid-cols-1 md:grid-cols-12">
         <div className="col-span-12 md:col-span-8">
           <div className="space-y-2 bg-gray-100 p-4">
@@ -230,10 +223,7 @@ function Dashboard() {
                         >
                           Crops
                         </TabsTrigger>
-                        <TabsTrigger
-                          onClick={() => setFilter4(3)}
-                          value="regt"
-                        >
+                        <TabsTrigger onClick={() => setFilter4(3)} value="regt">
                           Finished Product
                         </TabsTrigger>
                       </TabsList>
@@ -287,43 +277,47 @@ function Dashboard() {
                     </div>
                   </div>
                 </div>
-                <CardContent>{
-                  data4.length ? <><ChartContainer config={chartConfig}>
-                  <AreaChart
-                    accessibilityLayer
-                    data={chartData}
-                    margin={{
-                      left: 12,
-                      right: 12,
-                    }}
-                  >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                      tickFormatter={(value) => value.slice(0, 3)}
-                    />
-                    <YAxis aria-activ />
+                <CardContent>
+                  {data4.length ? (
+                    <>
+                      <ChartContainer config={chartConfig}>
+                        <AreaChart
+                          accessibilityLayer
+                          data={chartData}
+                          margin={{
+                            left: 12,
+                            right: 12,
+                          }}
+                        >
+                          <CartesianGrid vertical={false} />
+                          <XAxis
+                            dataKey="month"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => value.slice(0, 3)}
+                          />
+                          <YAxis aria-activ />
 
-                    <ChartTooltip
-                      cursor={true}
-                      content={<ChartTooltipContent indicator="line" />}
-                    />
-                    <Area
-                      dataKey="desktop"
-                      type="natural"
-                      fill="var(--color-desktop)"
-                      fillOpacity={0.2}
-                      stroke="var(--color-desktop)"
-                    />
-                  </AreaChart>
-                </ChartContainer></> : <div className="flex flex-row justify-center items-center h-40">
-                  <h1 className="text-2xl font-bold">No Sale Data</h1>
-                  </div>
-                  }
-                  
+                          <ChartTooltip
+                            cursor={true}
+                            content={<ChartTooltipContent indicator="line" />}
+                          />
+                          <Area
+                            dataKey="desktop"
+                            type="natural"
+                            fill="var(--color-desktop)"
+                            fillOpacity={0.2}
+                            stroke="var(--color-desktop)"
+                          />
+                        </AreaChart>
+                      </ChartContainer>
+                    </>
+                  ) : (
+                    <div className="flex h-40 flex-row items-center justify-center">
+                      <h1 className="text-2xl font-bold">No Sale Data</h1>
+                    </div>
+                  )}
                 </CardContent>
 
                 {/* <LinechartChart className="aspect-[4/3] w-full" /> */}
@@ -377,7 +371,9 @@ function Dashboard() {
                 <CardFooter className="mt-8 flex justify-between  pt-2">
                   <div className="flex items-center space-x-2">
                     <PackageIcon className="h-5 w-5 text-blue-500" />
-                    <p className="text-sm font-medium">{data?.total_inventory}</p>
+                    <p className="text-sm font-medium">
+                      {data?.total_inventory}
+                    </p>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Total Stock In
@@ -476,15 +472,22 @@ function Dashboard() {
                     Farmers Registered
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 overflow-auto h-[200px]">
-                  {data3?.farmers?.map((farmer:any, index:any) => (
+                <div className="grid h-[200px] grid-cols-2 gap-4 overflow-auto">
+                  {data3?.farmers?.map((farmer: any, index: any) => (
                     <div key={index} className="flex items-center space-x-3">
-                    <Avatar className="w-10 h-10">
-                <AvatarImage src="/placeholder-avatar.jpg" alt={farmer.name} />
-                <AvatarFallback>{farmer?.buyer_name?.charAt(0)}</AvatarFallback>
-              </Avatar>
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage
+                          src="/placeholder-avatar.jpg"
+                          alt={farmer.name}
+                        />
+                        <AvatarFallback>
+                          {farmer?.buyer_name?.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
-                        <div className="text-sm font-medium">{farmer?.buyer_name}</div>
+                        <div className="text-sm font-medium">
+                          {farmer?.buyer_name}
+                        </div>
                         <div className="text-xs text-gray-500">
                           {farmer?.mobile_no}
                         </div>
@@ -505,11 +508,12 @@ function Dashboard() {
             </Card>
           </div>
         </div>
-        <div className="col-span-12 p-4 md:col-span-4">
+        <div className="col-span-12 p-4 md:col-span-4 ">
+          <div className="bg-white p-6 rounded-sm shadow-md md:mt-10">
           <div className="font-bitter pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
             Most Viewed Schemes
           </div>
-          <div className="h-[250px] overflow-auto rounded-sm bg-white p-4">
+          <div className="h-[250px] overflow-auto bg-white p-4">
             {filteredData.map((item: any, index: number) => {
               return (
                 <div
@@ -536,6 +540,8 @@ function Dashboard() {
               );
             })}
           </div>
+          </div>
+          <div className="bg-white p-6 rounded-sm shadow-md md:mt-10">
           <div className="font-bitter mt-4 pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
             Recent Updates
           </div>
@@ -566,9 +572,9 @@ function Dashboard() {
               );
             })}
           </div>
+          </div>
         </div>
       </div>
-    </Layout>
   );
 }
 

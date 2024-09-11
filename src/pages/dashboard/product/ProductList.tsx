@@ -33,7 +33,6 @@ function ProductList() {
   const menuRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState<number>(1);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const user = useAppSelector((state: any) => state.login.user)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -59,7 +58,6 @@ function ProductList() {
     }
   };
   return (
-    <Layout>
       <Card className="p-4">
         <div className="flex flex-row items-center justify-between">
           <h1 className="p-3 text-xl font-bold">Product List</h1>
@@ -201,14 +199,13 @@ function ProductList() {
             <InputsTable />
           </TabsContent>
           <TabsContent value="password">
-            <CropsTable />
+            <CropsTable  />
           </TabsContent>
           <TabsContent value="passwords">
             <FinishedGoods />
           </TabsContent>
         </Tabs>
       </Card>
-    </Layout>
   );
 }
 

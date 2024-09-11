@@ -35,7 +35,7 @@ function SampleProduct() {
   );
 
   return (
-    <Layout>
+    <>
       <div className="relative flex w-[400px] flex-col items-start justify-start">
         <Input
           className="my-3"
@@ -56,7 +56,7 @@ function SampleProduct() {
           ))}
         </div>
       </Card>
-    </Layout>
+    </>
   );
 }
 

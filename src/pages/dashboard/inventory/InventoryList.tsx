@@ -19,11 +19,12 @@ import { Loader2 } from "lucide-react";
 import { BASE_URL_APP } from "../../../utils";
 import axiosInstance from "../../../service/AxiosInstance";
 import { MRT_PaginationState } from "material-react-table";
-import { log } from "node:console";
+import TableSkeleton from "../../../components/TableLoading";
 
 function InventoryList() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
+const [loading, setLoading] = useState(false)
   const [filter, setFilter] = useState<number>(1);
   const [selectedRow, setSelectedRow] = useState<any>();
   const [open, setOpen] = React.useState<boolean>(false);
@@ -43,6 +44,7 @@ function InventoryList() {
   };
 
   useEffect(() => {
+    setLoading(true)
     axiosInstance
       .get(`/fposupplier/InventorySection`, {
         params:{filter_type: filter,
@@ -63,6 +65,8 @@ function InventoryList() {
       .catch((error: any) => {
         console.log(error);
         toast.error(error?.response?.data?.error || "Something went wrong!");
+      }).finally(() => {
+    setLoading(false)
       });
   }, [filter, pagination.pageIndex, pagination.pageSize]);
 
@@ -156,10 +160,13 @@ function InventoryList() {
     }
   };
 
-  return (
-    <Layout>
+  return ( 
       <Card className="p-4">
-        <div className="flex flex-row justify-between">
+        {
+           loading ? 
+           <TableSkeleton />
+            : <>
+                <div className="flex flex-row justify-between">
           <h1 className="p-3 text-xl font-bold">Inventory List</h1>
         </div>
         <Tabs defaultValue="account">
@@ -238,8 +245,10 @@ function InventoryList() {
             </Button>
           </DialogActions>
         </Dialog>
+            </>
+        }
+    
       </Card>
-    </Layout>
   );
 }
 

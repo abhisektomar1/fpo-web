@@ -134,7 +134,7 @@ function NewProducts() {
 
     try {
       const res = await axiosInstance.post(
-        `${BASE_URL_APP}/fposupplier/ProductDetailsAddGetDelUpdate`,
+        `/fposupplier/ProductDetailsAddGetDelUpdate`,
         dataa,
       );
       toast("Product Created Successfully");
@@ -153,7 +153,6 @@ function NewProducts() {
     ) : null;
   };
   return (
-    <Layout>
       <Card className="min-h-screen rounded p-4">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-12">
@@ -499,7 +498,6 @@ function NewProducts() {
           </div>
         </form>
       </Card>
-    </Layout>
   );
 }
 

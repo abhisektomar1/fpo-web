@@ -94,7 +94,7 @@ const ShopEdit: React.FC = () => {
   };
 
   return (
-    <Layout>
+    
            <Card className="min-h-screen rounded p-4">
       <div className="container mx-auto p-1">
         <div className="relative grid grid-cols-1 gap-4 md:grid-cols-12 w-2/3">
@@ -247,8 +247,6 @@ const ShopEdit: React.FC = () => {
         </div>
       </div>
       </Card>
-      
-    </Layout>
   );
 };
 

@@ -109,7 +109,6 @@ function CustomerList() {
   
 
   return (
-    <Layout>
       <Card className="p-4">
         <div className="flex flex-row justify-between">
           <h1 className="p-3 text-xl font-bold">Customer List</h1>
@@ -121,14 +120,9 @@ function CustomerList() {
         </div>
          
           <div className="tableDatadiv px-3 py-2">
-            <Table
-              {...tableProps}
-              columns={columns}
-              data={data}
-            ></Table>
+           
           </div>
       </Card>
-    </Layout>
   );
 }
 

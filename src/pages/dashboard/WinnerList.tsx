@@ -108,7 +108,6 @@ function WinnerList() {
     []
   );
   return (
-    <Layout>
       <Card className="p-8 py-8">
         <h1 className="p-3 text-xl font-bold">Farmer Winners</h1>
         <div className="tableDatadiv px-3 py-2">
@@ -119,7 +118,6 @@ function WinnerList() {
         ></Table>
         </div>
       </Card>
-    </Layout>
   );
 }
 

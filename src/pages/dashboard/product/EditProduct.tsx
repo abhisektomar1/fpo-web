@@ -159,7 +159,6 @@ function EditProduct() {
     ) : null;
   };
   return (
-    <Layout>
       <Card className="min-h-screen rounded p-4">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-12">
@@ -432,7 +431,6 @@ function EditProduct() {
           </div>
         </form>
       </Card>
-    </Layout>
   );
 }
 

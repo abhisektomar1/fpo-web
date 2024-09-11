@@ -49,7 +49,6 @@ function AddWarehouse() {
     }
   };
   return (
-    <Layout>
       <Card className="p-4 py-8">
         <h1 className="p-3 text-xl font-bold">New Warehouse</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -176,7 +175,6 @@ function AddWarehouse() {
           </div>
         </form>
       </Card>
-    </Layout>
   );
 }
 

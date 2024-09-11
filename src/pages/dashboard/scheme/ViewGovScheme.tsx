@@ -68,7 +68,6 @@ function ViewGovScheme() {
     return text;
   };
   return (
-    <Layout>
       <div className="container mx-auto p-1">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
           <div className="col-span-12 m-2 rounded bg-white p-4  md:col-span-8">
@@ -172,7 +171,6 @@ function ViewGovScheme() {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }
 

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../layout";
 import { Card } from "../../../components/ui/card";
-import { useAppSelector } from "../../../store/hooks";
 import {
   Controller,
   FieldError,
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import { BASE_URL_APP } from "../../../utils";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/text-area";
@@ -153,7 +150,6 @@ function NewSale() {
     ) : null;
   };
   return (
-    <Layout>
       <Card className="min-h-screen rounded p-4">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-12">
@@ -380,7 +376,6 @@ function NewSale() {
           </div>
         </form>
       </Card>
-    </Layout>
   );
 }
 
