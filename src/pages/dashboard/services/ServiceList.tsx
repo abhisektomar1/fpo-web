@@ -102,11 +102,11 @@ function ServiceList() {
       <Card className="p-8 py-8">
         <h1 className="p-3 text-xl font-bold">UserProfile</h1>
         <div className="tableDatadiv px-3 py-2">
-        <Table
+        {/* <Table
           {...tableProps}
           columns={columns}
           data={data}
-        ></Table>
+        ></Table> */}
         </div>
       </Card>
   );

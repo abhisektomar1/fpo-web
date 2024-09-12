@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Layout from "../../../layout";
 import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 import { Card } from "../../../components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +15,13 @@ import {
 } from "@mui/material";
 import { Button } from "../../../components/ui/button";
 import { Loader2 } from "lucide-react";
-import { BASE_URL_APP } from "../../../utils";
 import axiosInstance from "../../../service/AxiosInstance";
 import { MRT_PaginationState } from "material-react-table";
 import TableSkeleton from "../../../components/TableLoading";
 
 function InventoryList() {
-  const navigate = useNavigate();
   const [data, setData] = useState<any>([]);
-const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<number>(1);
   const [selectedRow, setSelectedRow] = useState<any>();
   const [open, setOpen] = React.useState<boolean>(false);
@@ -44,20 +41,21 @@ const [loading, setLoading] = useState(false)
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     axiosInstance
       .get(`/fposupplier/InventorySection`, {
-        params:{filter_type: filter,
+        params: {
+          filter_type: filter,
           page: pagination.pageIndex + 1, // API typically uses 1-based indexing
           page_size: pagination.pageSize,
-        }
+        },
       })
       .then((res: any) => {
         console.log(res);
-        
+
         if (res.data.results.status === "success") {
           setData(res.data.results.inventory);
-          setTotalPages(res.data.count)
+          setTotalPages(res.data.count);
         } else {
           toast.error("Something went wrong!");
         }
@@ -65,8 +63,9 @@ const [loading, setLoading] = useState(false)
       .catch((error: any) => {
         console.log(error);
         toast.error(error?.response?.data?.error || "Something went wrong!");
-      }).finally(() => {
-    setLoading(false)
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [filter, pagination.pageIndex, pagination.pageSize]);
 
@@ -104,24 +103,21 @@ const [loading, setLoading] = useState(false)
             id: "name", //id is still required when using accessorFn instead of accessorKey
             header: "Stock Status",
             size: 250,
-            Cell: ({ renderedCellValue, row }: any) => (
-           
-                row?.original.stock_status === "Low Stock" ? (
-                 <Box
+            Cell: ({ renderedCellValue, row }: any) =>
+              row?.original.stock_status === "Low Stock" ? (
+                <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
                     gap: "1rem",
-                    color:"red",
+                    color: "red",
                   }}
                 >
-                    <span>{row.original.stock_status}</span>
-                </Box>
-                ) : (
                   <span>{row.original.stock_status}</span>
-                )
-           
-            ),
+                </Box>
+              ) : (
+                <span>{row.original.stock_status}</span>
+              ),
           },
           {
             accessorKey: "stock_quantity",
@@ -144,13 +140,10 @@ const [loading, setLoading] = useState(false)
     setIsLoading(true);
 
     try {
-       await axiosInstance.put(
-        `/fposupplier/InventorySection`,
-        {
-          inventory_id: selectedRow?.inventory_id,
-          new_stock: Number(stock),
-        },
-      );
+      await axiosInstance.put(`/fposupplier/InventorySection`, {
+        inventory_id: selectedRow?.inventory_id,
+        new_stock: Number(stock),
+      });
       toast("quantity changed successfully");
     } catch (error: any) {
       console.log(error);
@@ -160,95 +153,96 @@ const [loading, setLoading] = useState(false)
     }
   };
 
-  return ( 
-      <Card className="p-4">
-        {
-           loading ? 
-           <TableSkeleton />
-            : <>
-                <div className="flex flex-row justify-between">
-          <h1 className="p-3 text-xl font-bold">Inventory List</h1>
-        </div>
-        <Tabs defaultValue="account">
-          <TabsList>
-            <TabsTrigger
-              onClick={() => setFilter(1)}
-              value="account"
-            >
-              Agricultural Inputs
-            </TabsTrigger>
-            <TabsTrigger onClick={() => setFilter(2)} value="password">
-              Crops
-            </TabsTrigger>
-            <TabsTrigger onClick={() => setFilter(3)} value="regt">
-              Finished Product
-            </TabsTrigger>
-          </TabsList>
-          <div className="tableDatadiv px-3 py-2">
-            <Table
-              pagination={pagination}
-              setPagination={setPagination}
-              rowCount={totalPages}
-              {...tableProps}
-              columns={columns}
-              data={data}
-              isEdit={true}
-              editClick={editClick}
-            ></Table>
+  return (
+    <Card className="p-4">
+      {loading ? (
+        <TableSkeleton />
+      ) : (
+        <>
+          <div className="flex flex-row justify-between">
+            <h1 className="p-3 text-xl font-bold">Inventory List</h1>
           </div>
-        </Tabs>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            component: "form",
-            onSubmit: (event: any) => {
-              event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
-              const email = formJson.email;
-              console.log(email);
-              handleClose();
-            },
-          }}
-        >
-          <DialogTitle>Edit Quantity</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              To edit quantity, please enter the new quantity. And make sure
-              they don not exceed the product quantity.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="name"
-              label="Stock quantity"
-              fullWidth
-              variant="standard"
-              value={stock}
-              onChange={(e: any) => {
-                setStock(e.target.value);
-              }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button variant="outline" className="rounded" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button onClick={onSubmit} className="rounded" type="submit">
-              {" "}
-              {isLoading && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}{" "}
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-            </>
-        }
-    
-      </Card>
+          <Tabs defaultValue="account">
+            <TabsList>
+              <TabsTrigger onClick={() => setFilter(1)} value="account">
+                Agricultural Inputs
+              </TabsTrigger>
+              <TabsTrigger onClick={() => setFilter(2)} value="password">
+                Crops
+              </TabsTrigger>
+              <TabsTrigger onClick={() => setFilter(3)} value="regt">
+                Finished Product
+              </TabsTrigger>
+            </TabsList>
+            <div className="tableDatadiv px-3 py-2">
+              <Table
+                pagination={pagination}
+                setPagination={setPagination}
+                rowCount={totalPages}
+                {...tableProps}
+                columns={columns}
+                data={data}
+                isEdit={true}
+                editClick={editClick}
+              ></Table>
+            </div>
+          </Tabs>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            PaperProps={{
+              component: "form",
+              onSubmit: (event: any) => {
+                event.preventDefault();
+                const formData = new FormData(event.currentTarget);
+                const formJson = Object.fromEntries(formData.entries());
+                const email = formJson.email;
+                console.log(email);
+                handleClose();
+              },
+            }}
+          >
+            <DialogTitle>Edit Quantity</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To edit quantity, please enter the new quantity. And make sure
+                they don not exceed the product quantity.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                type="number"
+                required
+                margin="dense"
+                id="name"
+                label="Stock quantity"
+                fullWidth
+                variant="standard"
+                value={stock}
+                onChange={(e: any) => {
+                  setStock(e.target.value);
+                }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="outline"
+                className="rounded"
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button onClick={onSubmit} className="rounded" type="submit">
+                {" "}
+                {isLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}{" "}
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
+    </Card>
   );
 }
 

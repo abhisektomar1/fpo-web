@@ -35,7 +35,7 @@ export const AnimatedWrapper: React.FC<AnimatedWrapperProps> = ({ children, dela
         animate="visible"
         exit="exit"
         variants={variants}
-        transition={{ duration: 0.3, delay }}
+        transition={{ duration: 0.1, delay }}
       >
         {children}
       </motion.div>

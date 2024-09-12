@@ -4,12 +4,10 @@ import { BASE_URL_APP } from "../utils";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../store/hooks";
 import { clearUser, setUser } from "../store/loginSlice";
-import { setNav } from "../store/NavSlice";
 import { useNavigate } from "react-router-dom";
-import { setLan } from "../store/lanSlice";
 import { CircleUserRound, UserRound } from "lucide-react";
-import axiosInstance from "../service/AxiosInstance";
 import { useHeaderData } from "../hooks/useHeaderData";
+import { AccountPopover } from "../components/account-popover";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -68,7 +66,7 @@ function Header() {
   };
 
   return (
-    <header className="flex h-20 items-center justify-between bg-white p-6 px-4 md:px-12 border-b">
+    <header className="flex h-20 items-center justify-between bg-white  p-6 px-4 md:px-12 ">
       <img
         src="/images/agri.png"
         className="w-[180px] hover:cursor-pointer"
@@ -194,19 +192,19 @@ function Header() {
             </div>
           )}
         </div> */}
-        <div className="flex items-center space-x-2 rounded-full border border-gray-400 p-2">
+        {/* <div className="flex items-center space-x-2 rounded-full border border-gray-400 p-2">
           <img src="/images/coin.svg" alt="Coins" className="h-5 w-6" />
           <span>300</span>
         </div>
         <Button variant="link" size="icon">
           <img src="/images/bell.svg" alt="Notifications" className="h-5 w-5" />
-        </Button>
+        </Button> */}
         <div className="relative" ref={menuRef}>
           {headerData?.profile.profile ? (
             <img
               src={`${BASE_URL_APP}${headerData?.profile?.profile}`}
               onClick={toggleMenu}
-              className="h-12 w-12 border-primary border-2 rounded-full hover:cursor-pointer"
+              className="h-12 w-12  rounded-full hover:cursor-pointer"
             />
           ) : (
             <CircleUserRound
@@ -223,19 +221,20 @@ function Header() {
             <div className="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg">
               <a
                 href="/dashboard/userProfile"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
               >
                 Profile
               </a>
               <button
                 onClick={handleLogout}
-                className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full px-4 py-2 font-bold  text-left text-sm text-red-500 hover:bg-gray-100"
               >
                 Logout
               </button>
             </div>
           )}
         </div>
+        {/* <AccountPopover /> */}
       </div>
     </header>
   );

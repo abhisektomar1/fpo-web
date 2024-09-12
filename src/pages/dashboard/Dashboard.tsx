@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import axios from "axios";
 import { BASE_URL_APP } from "../../utils";
+import { LinearProgress } from "@mui/material";
 
 function Dashboard() {
   const [data, setData] = useState<any>([]);
@@ -197,6 +198,8 @@ function Dashboard() {
   };
 
   return (
+    <>
+    
       <div className="relative grid grid-cols-1 md:grid-cols-12">
         <div className="col-span-12 md:col-span-8">
           <div className="space-y-2 bg-gray-100 p-4">
@@ -320,10 +323,12 @@ function Dashboard() {
                   )}
                 </CardContent>
 
-                {/* <LinechartChart className="aspect-[4/3] w-full" /> */}
               </CardContent>
             </Card>
-            <div className="grid gap-6 md:grid-cols-2 ">
+            <div
+              className="grid gap-6 md:grid-cols-2"
+              style={{ marginTop: "35px" }}
+            >
               <Card>
                 <CardHeader className="flex justify-between pb-1 pt-4">
                   <div>
@@ -437,7 +442,7 @@ function Dashboard() {
                 </CardFooter>
               </Card>
             </div>
-            <Card className="relative w-full">
+            <Card className="relative w-full" style={{ marginTop: "35px" }}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl font-bold">
                   Total Farmers
@@ -502,79 +507,78 @@ function Dashboard() {
                   ))}
                 </div>
               </CardContent>
-              {/* <div className="absolute right-2 top-1/2 -translate-y-1/2 transform">
-                <ChevronRight className="h-6 w-6 text-gray-300" />
-              </div> */}
+             
             </Card>
           </div>
         </div>
         <div className="col-span-12 p-4 md:col-span-4 ">
-          <div className="bg-white p-6 rounded-sm shadow-md md:mt-10">
-          <div className="font-bitter pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
-            Most Viewed Schemes
-          </div>
-          <div className="h-[250px] overflow-auto bg-white p-4">
-            {filteredData.map((item: any, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className="mt-1 flex flex-row gap-2 rounded border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => {
-                    navigae(`/dashboard/governmentSchemes/${item.scheme_id}`);
-                  }}
-                >
-                  <img
-                    src={`${BASE_URL_APP}${item.scheme_image}`}
-                    className="m-1 rounded"
-                    width={50}
-                  />
-                  <div>
-                    <div className="font-roboto text-left text-[13px] text-base font-semibold leading-5 tracking-[0.15px]">
-                      {item.scheme_name}
-                    </div>
-                    <div className="font-roboto text-left text-[10px] text-base font-normal leading-4 tracking-[0.15px] text-[#64748B]">
-                      {truncateText(item.details, 5)}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          </div>
-          <div className="bg-white p-6 rounded-sm shadow-md md:mt-10">
-          <div className="font-bitter mt-4 pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
-            Recent Updates
-          </div>
-          <div className="h-[250px] overflow-auto rounded bg-white p-4">
-            {filteredData.map((item: any, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className="mt-1 flex flex-row gap-2 rounded border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => {
-                    navigae(`/dashboard/governmentSchemes/${item.scheme_id}`);
-                  }}
-                >
-                  <img
-                    src={`${BASE_URL_APP}${item.scheme_image}`}
-                    className="m-1 rounded"
-                    width={50}
-                  />
-                  <div>
-                    <div className="font-roboto text-left text-[13px] text-base font-semibold leading-5 tracking-[0.15px]">
-                      {item.scheme_name}
-                    </div>
-                    <div className="font-roboto text-left text-[10px] text-base font-normal leading-4 tracking-[0.15px] text-[#64748B]">
-                      {truncateText(item.details, 5)}
+          <div className="rounded-sm bg-white p-6 shadow-md md:mt-10">
+            <div className="font-bitter pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
+              Most Viewed Schemes
+            </div>
+            <div className="h-[250px] overflow-auto bg-white p-4">
+              {filteredData.map((item: any, index: number) => {
+                return (
+                  <div
+                    key={index}
+                    className="mt-1 flex flex-row gap-2 rounded border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg"
+                    onClick={() => {
+                      navigae(`/dashboard/governmentSchemes/${item.scheme_id}`);
+                    }}
+                  >
+                    <img
+                      src={`${BASE_URL_APP}${item.scheme_image}`}
+                      className="m-1 rounded"
+                      width={50}
+                    />
+                    <div>
+                      <div className="font-roboto text-left text-[13px] text-base font-semibold leading-5 tracking-[0.15px]">
+                        {item.scheme_name}
+                      </div>
+                      <div className="font-roboto text-left text-[10px] text-base font-normal leading-4 tracking-[0.15px] text-[#64748B]">
+                        {truncateText(item.details, 5)}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+          <div className="rounded-sm bg-white p-6 shadow-md md:mt-10">
+            <div className="font-bitter mt-4 pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
+              Recent Updates
+            </div>
+            <div className="h-[250px] overflow-auto rounded bg-white p-4">
+              {filteredData.map((item: any, index: number) => {
+                return (
+                  <div
+                    key={index}
+                    className="mt-1 flex flex-row gap-2 rounded border-b border-gray-300 pb-2 hover:cursor-pointer hover:shadow-lg"
+                    onClick={() => {
+                      navigae(`/dashboard/governmentSchemes/${item.scheme_id}`);
+                    }}
+                  >
+                    <img
+                      src={`${BASE_URL_APP}${item.scheme_image}`}
+                      className="m-1 rounded"
+                      width={50}
+                    />
+                    <div>
+                      <div className="font-roboto text-left text-[13px] text-base font-semibold leading-5 tracking-[0.15px]">
+                        {item.scheme_name}
+                      </div>
+                      <div className="font-roboto text-left text-[10px] text-base font-normal leading-4 tracking-[0.15px] text-[#64748B]">
+                        {truncateText(item.details, 5)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
+    </>
   );
 }
 
