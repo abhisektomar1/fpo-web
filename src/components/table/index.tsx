@@ -14,8 +14,6 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import PublishIcon from "@mui/icons-material/Publish";
 import { lighten } from "@mui/system";
-import { NavLink } from "react-router-dom";
-import axiosInstance from "../../service/AxiosInstance";
 
 interface Props {
   enableRowActionsTrue: boolean;
@@ -116,7 +114,7 @@ const Table: React.FC<Props> = ({
     enableRowSelection: enableRowSelection,
     enableFullScreenToggle: true,
     enableRowNumbers: true,
-    rowNumberDisplayMode: "original",
+    rowNumberDisplayMode: "static",
     columnFilterDisplayMode: "custom",
     defaultColumn: {
       minSize: 50,

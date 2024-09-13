@@ -61,10 +61,10 @@ function Login() {
 
           <div className="flex flex-col items-center justify-center p-8">
             <h3 className="font-roboto text-center text-3xl font-medium leading-[56.02px]">
-              Log in
+              Log In
             </h3>
             <p className="text-center text-base font-normal leading-[16.8px] tracking-[0.17px] text-gray-500">
-              Sign up to start your journey with us
+              Sign in to start your journey with us
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mt-8 flex w-[300px] flex-col items-start justify-start">
@@ -79,6 +79,7 @@ function Login() {
                   minLength: 10,
                   maxLength: 10,
                 })}
+                placeholder="Enter your mobile No."
                   onKeyDown={(e) => {
                     const isNumeric = /^[0-9]$/.test(e.key);
                     const isBackspaceOrDelete = e.key === 'Backspace' || e.key === 'Delete';
@@ -101,11 +102,12 @@ function Login() {
                   Password
                 </label>
                 <Input
+                placeholder="Enter your Password"
                   type={showPassword ? "text" : "password"}
                   {...register("password", {
                     required: true,
-                    // pattern:
-                    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()_+])[A-Za-z\d!@#$%^&*()_+]{5,10}$/,
+                    pattern:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()_+])[A-Za-z\d!@#$%^&*()_+]{5,10}$/,
                   })}
                 />
                 {showPassword ? (
@@ -125,7 +127,7 @@ function Login() {
                     letter, one uppercase letter, and one special character
                   </p>
                 )}
-                <label
+                {/* <label
                   htmlFor="email"
                   className="block text-sm font-medium text-primary self-end mt-2 hover:cursor-pointer"
                   onClick={() => {
@@ -133,7 +135,7 @@ function Login() {
                   }}
                 >
                   Change Password ?
-                </label>
+                </label> */}
               </div>
               <div className="flex flex-col items-center justify-center">
                 <Button type="submit" className="mt-4 w-[300px] rounded">
