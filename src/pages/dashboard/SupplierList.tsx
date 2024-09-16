@@ -27,12 +27,8 @@ function SupplierList() {
         }
       })
       .then((res) => {
-        if (res.data.results.status === "success") {
-          setData(res.data.results.data);
-          setTotalPages(res.data.count)
-        } else {
-          toast.error("Something went wrong!");
-        }
+          setData(res?.data?.results?.data);
+          setTotalPages(res?.data?.count)
       })
       .catch((error) => {
         console.log(error);

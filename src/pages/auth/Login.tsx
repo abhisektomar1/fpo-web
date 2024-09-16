@@ -148,11 +148,11 @@ function Login() {
                 </Button>
               </div>
             </form>
-            {/* <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
+            <Button variant="link" className="mt-4 w-[300px] rounded" onClick={() => {
               navigate("/signup")
             }}>
               SIGN UP
-            </Button> */}
+            </Button>
           </div>
         </div>
       </div>
