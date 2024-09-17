@@ -35,13 +35,20 @@ function NewProducts() {
 
   const [status, SetStatus] = useState<any>();
   const [mType, setmType] = useState<any>();
-  const lan = useAppSelector((state) => state.lan.lan);
-  const user = useAppSelector((state: any) => state.login.user);
+
+  const [measurement, setMeasurement] = useState<any>()
 
   useEffect(() => {
     axiosInstance
       .get(`/fposupplier/GetallFPOCrops`)
       .then((res) => setCrops(res.data.data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/fposupplier/GetMeasurements`)
+      .then((res) => setMeasurement(res.data))
       .catch((error) => console.log(error));
   }, []);
 
@@ -66,7 +73,7 @@ function NewProducts() {
       };
       reader.readAsDataURL(file);
     }
-  };
+  }; 
 
   const {
     register,
@@ -303,12 +310,15 @@ function NewProducts() {
                       <SelectValue placeholder="Select Measurement Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="KG">KG</SelectItem>
-                      <SelectItem value="GM">GM</SelectItem>
-                      <SelectItem value="L">L</SelectItem>
-                      <SelectItem value="ML">ML</SelectItem>
-                      <SelectItem value="DOZEN">DOZEN</SelectItem>
-                    </SelectContent>
+                          {measurement?.map((m: any) => (
+                            <SelectItem
+                              key={m.measurement_id}
+                              value={m?.measurement_id?.toString()}
+                            >
+                              {m.description}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
                   </Select>
                 </div>
                 <div className="flex flex-row items-center justify-between gap-4 p-2">

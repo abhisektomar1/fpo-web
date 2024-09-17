@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Layout from "../../layout";
 import { Card } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
 import Table from "../../components/table";
 import axiosInstance from "../../service/AxiosInstance";
 import { MRT_PaginationState } from "material-react-table";
@@ -22,7 +20,7 @@ function SupplierList() {
     axiosInstance
       .get(`/fposupplier/PurchaseInfo`, {
         params:{
-          page: pagination.pageIndex + 1, // API typically uses 1-based indexing
+          page: pagination.pageIndex + 1, 
           page_size: pagination.pageSize,
         }
       })
