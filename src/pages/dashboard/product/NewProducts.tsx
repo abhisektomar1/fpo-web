@@ -295,10 +295,10 @@ function NewProducts() {
                     {renderErrorMessage(errors.quantity)}
                   </div>
                 </div>
-
+                        {/* //hiii */}
                 <div className="flex flex-row items-center justify-between gap-4 p-2">
                   <div className="font-roboto text-left text-base font-medium leading-6 tracking-wide">
-                    Measurement Type
+                    Measurement Type  
                     <span className="text-destructive">*</span>
                   </div>
                   <Select
