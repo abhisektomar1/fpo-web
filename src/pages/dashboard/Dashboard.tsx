@@ -243,7 +243,7 @@ function Dashboard() {
                           value="password"
                           onClick={() => setFilter5("Offline")}
                         >
-                          Ofline
+                          Offline
                         </TabsTrigger>
                       </TabsList>
                     </Tabs>
@@ -513,7 +513,7 @@ function Dashboard() {
         </div>
         <div className="col-span-12 p-4 md:col-span-4 ">
           <div className="rounded-sm bg-white p-6 shadow-md md:mt-10">
-            <div className="font-bitter pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
+            <div className="font-bitter pb-2 text-right text-[25px] font-medium leading-[41.99px] tracking-[0.25px]">
               Most Viewed Schemes
             </div>
             <div className="h-[250px] overflow-auto bg-white p-4">
@@ -545,7 +545,7 @@ function Dashboard() {
             </div>
           </div>
           <div className="rounded-sm bg-white p-6 shadow-md md:mt-10">
-            <div className="font-bitter mt-4 pb-2 text-right text-[30px] font-medium leading-[41.99px] tracking-[0.25px]">
+            <div className="font-bitter mt-4 pb-2 text-right text-[25px] font-medium leading-[41.99px] tracking-[0.25px]">
               Recent Updates
             </div>
             <div className="h-[250px] overflow-auto rounded bg-white p-4">

@@ -162,15 +162,15 @@ function InventoryList() {
           <div className="flex flex-row justify-between">
             <h1 className="p-3 text-xl font-bold">Inventory List</h1>
           </div>
-          <Tabs defaultValue="account">
+          <Tabs defaultValue={filter.toString()}>
             <TabsList>
-              <TabsTrigger onClick={() => setFilter(1)} value="account">
+              <TabsTrigger onClick={() => setFilter(1)} value="1">
                 Agricultural Inputs
               </TabsTrigger>
-              <TabsTrigger onClick={() => setFilter(2)} value="password">
+              <TabsTrigger onClick={() => setFilter(2)} value="2">
                 Crops
               </TabsTrigger>
-              <TabsTrigger onClick={() => setFilter(3)} value="regt">
+              <TabsTrigger onClick={() => setFilter(3)} value="3">
                 Finished Product
               </TabsTrigger>
             </TabsList>
