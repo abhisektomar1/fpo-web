@@ -353,7 +353,6 @@ function NewProducts() {
                       <SelectValue placeholder="Select Selling Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="All">All</SelectItem>
                       <SelectItem value="Online">Online</SelectItem>
                       <SelectItem value="Offline">Offline</SelectItem>
                     </SelectContent>

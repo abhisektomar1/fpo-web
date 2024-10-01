@@ -38,6 +38,16 @@ function EditProduct() {
   const [data, setData] = useState<any>();
   const lan = useAppSelector((state) => state.lan.lan);
   const [productType, setProductType] = useState<number>();
+  const [measurement, setMeasurement] = useState<any>()
+console.log(data,"data");
+
+
+  useEffect(() => {
+    axiosInstance
+      .get(`/fposupplier/GetMeasurements`)
+      .then((res) => setMeasurement(res.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {
     axiosInstance
@@ -158,6 +168,7 @@ function EditProduct() {
       <p className="text-sm text-destructive">{error.message}</p>
     ) : null;
   };
+
   return (
       <Card className="min-h-screen rounded p-4">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -369,11 +380,14 @@ function EditProduct() {
                           <SelectValue placeholder="Select Measurement Type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="KG">KG</SelectItem>
-                          <SelectItem value="GM">GM</SelectItem>
-                          <SelectItem value="L">L</SelectItem>
-                          <SelectItem value="ML">ML</SelectItem>
-                          <SelectItem value="DOZEN">DOZEN</SelectItem>
+                        {measurement?.map((m: any) => (
+                            <SelectItem
+                              key={m.measurement_id}
+                              value={m?.measurement_id?.toString()}
+                            >
+                              {m.description}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -398,7 +412,6 @@ function EditProduct() {
                           <SelectValue placeholder="Select Selling Status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="All">All</SelectItem>
                           <SelectItem value="Online">Online</SelectItem>
                           <SelectItem value="Offline">Offline</SelectItem>
                         </SelectContent>
