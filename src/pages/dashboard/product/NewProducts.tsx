@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../../layout";
 import { Card, CardTitle } from "../../../components/ui/card";
-import { useAppSelector } from "../../../store/hooks";
 import { FieldError, useForm } from "react-hook-form";
-import { BASE_URL_APP } from "../../../utils";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/text-area";
